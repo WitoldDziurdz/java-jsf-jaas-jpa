@@ -4,6 +4,7 @@
  */
 package pl.gda.pg.eti.kask.javaee.enterprise.users;
 
+import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
 
 import javax.annotation.Resource;
@@ -31,8 +32,20 @@ public class UserService {
     }
 
     @RolesAllowed(User.Roles.ADMIN)
+    public User findUserById(String id) {
+        TypedQuery<User> query = em.createNamedQuery(User.Queries.FIND_BY_ID, User.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
+    }
+
+    @RolesAllowed(User.Roles.ADMIN)
     public User findUser(String login) {
         return findUserByLogin(login);
+    }
+
+    @RolesAllowed(User.Roles.ADMIN)
+    public void saveUser(User user) {
+        em.merge(user);
     }
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.USER, User.Roles.MANAGER, User.Roles.WORKER})
@@ -51,6 +64,7 @@ public class UserService {
             throw new ServletException();
         }
     }
+
 
     private User findUserByLogin(String login) {
         TypedQuery<User> query = em.createNamedQuery(User.Queries.FIND_BY_LOGIN, User.class);

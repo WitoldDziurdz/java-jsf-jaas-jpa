@@ -47,14 +47,10 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav visible-xs">
-                    <li><h:link outcome="/books/list_books.xhtml" value="#{msg.books}"/></li>
-                    <li><h:link outcome="/books/list_recent_releases.xhtml" value="#{msg.recentReleases}"/></li>
-                    <li><h:link outcome="/books/list_authors.xhtml" value="#{msg.authors}"/></li>
-                    <li><h:link outcome="/books/view_statistics.xhtml" value="#{msg.statistics}"/></li>
                     <li><h:link outcome="/couriers/list_packs.xhtml" value="Paczki"/></li>
                     <li><h:link outcome="/couriers/list_couriers.xhtml" value="Kurierzy"/></li>
                     <li><h:link outcome="/couriers/list_departments.xhtml" value="Oddzialy"/></li>
-                    <li><h:link outcome="/admin/list_users.xhtml" value="Użytkownicy"/></li>
+                    <li><h:link  rendered="#{main.admin}" outcome="/admin/list_users.xhtml" value="Użytkownicy"/></li>
                 </ul>
 
                 <h:form styleClass="navbar-right" rendered="#{authContext.authenticated}">
@@ -78,30 +74,6 @@
             <div class="col-sm-3 col-md-2 col-xs-12 sidebar">
                 <ul class="nav nav-sidebar">
                     <li>
-                        <h:link outcome="/books/list_books.xhtml">
-                            <i class="fa fa-book fa-fw"></i>
-                            <h:outputText value="#{msg.books}"/>
-                        </h:link>
-                    </li>
-                    <li>
-                        <h:link outcome="/books/list_recent_releases.xhtml">
-                            <i class="fa fa-info-circle fa-fw"></i>
-                            <h:outputText value="#{msg.recentReleases}"/>
-                        </h:link>
-                    </li>
-                    <li>
-                        <h:link outcome="/books/list_authors.xhtml">
-                            <i class="fa fa-vcard fa-fw"></i>
-                            <h:outputText value="#{msg.authors}"/>
-                        </h:link>
-                    </li>
-                    <li>
-                        <h:link outcome="/books/view_statistics.xhtml">
-                            <i class="fa fa-bar-chart fa-fw"></i>
-                            <h:outputText value="#{msg.statistics}"/>
-                        </h:link>
-                    </li>
-                    <li>
                         <h:link outcome="/couriers/list_packs.xhtml">
                             <i class="fa fa-archive fa-fw"></i>
                             <h:outputText value="Paczki"/>
@@ -120,7 +92,7 @@
                         </h:link>
                     </li>
                     <li>
-                        <h:link outcome="/admin/list_users.xhtml">
+                        <h:link rendered="#{main.admin}" outcome="/admin/list_users.xhtml">
                             <i class="fa fa-users fa-fw"></i>
                             <h:outputText value="Użytkownicy"/>
                         </h:link>

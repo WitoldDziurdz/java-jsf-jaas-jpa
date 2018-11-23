@@ -2,17 +2,17 @@ package pl.gda.pg.eti.kask.javaee.enterprise.web.converters;
 
 import pl.gda.pg.eti.kask.javaee.enterprise.books.CourierService;
 
+import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 abstract class AbstractEntityConverter<T> implements Converter<T> {
 
-    @Inject
+    @EJB
     CourierService courierService;
 
     private BiFunction<CourierService, Integer, T> retrieveFunction;

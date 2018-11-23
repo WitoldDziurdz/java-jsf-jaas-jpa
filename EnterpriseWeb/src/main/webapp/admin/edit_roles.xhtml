@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="login" value="#{editUser.login}"/>
+        <f:event type="preRenderView" listener="#{editUser.preRenderView()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form>
+            <h:panelGrid styleClass="table table-striped" columns="2">
+                <h:outputLabel value="Id: " for="id"/>
+                <h:outputText id="id" value="#{editUser.user.id}"/>
+                <h:outputLabel value="Login: " for="login"/>
+                <h:outputText id="login" value="#{editUser.user.login}"/>
+                <h:outputLabel value="Roles: " for="roles"/>
+                <h:selectManyListbox  id="roles" value="#{editUser.roles}">
+                    <f:selectItems value="#{editUser.rolesSizeAsSelectItems}"/>
+                </h:selectManyListbox >
+                <h:message for="roles"/>
+            </h:panelGrid>
+
+            <h:commandButton styleClass="btn btn-primary" value="Zapisz" rendered="#{editUser.canEdit()}" action="#{editUser.save()}"/>
+            <h:button styleClass="btn btn-default ml-1" value="Powrót" outcome="list_users.xhtml"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

@@ -3,8 +3,10 @@ package pl.gda.pg.eti.kask.javaee.enterprise.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import javax.management.relation.Role;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @ToString
@@ -13,7 +15,8 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = User.Queries.FIND_ALL, query = "SELECT u FROM User u"),
-        @NamedQuery(name = User.Queries.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = :login")
+        @NamedQuery(name = User.Queries.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = :login"),
+        @NamedQuery(name = User.Queries.FIND_BY_ID, query = "SELECT u FROM User u WHERE u.id = :id")
 
 })
 public class User implements Serializable {
@@ -21,6 +24,7 @@ public class User implements Serializable {
     public static class Queries {
         public static final String FIND_ALL = "User.findAll";
         public static final String FIND_BY_LOGIN = "User.findByLogin";
+        public static final String FIND_BY_ID = "User.findById";
     }
 
     public static class Roles {
@@ -28,6 +32,7 @@ public class User implements Serializable {
         public static final String USER = "USER";
         public static final String MANAGER = "MANAGER";
         public static final String WORKER = "WORKER";
+
     }
 
     @Getter

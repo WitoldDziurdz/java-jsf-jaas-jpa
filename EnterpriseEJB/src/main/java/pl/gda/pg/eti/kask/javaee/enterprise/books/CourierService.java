@@ -7,6 +7,7 @@ import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +17,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 
-@ApplicationScoped
+@Stateless
 public class CourierService implements Serializable {
 
     @PersistenceContext

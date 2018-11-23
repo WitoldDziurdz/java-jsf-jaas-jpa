@@ -27,29 +27,29 @@
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Pokaż" outcome="view_courier.xhtml">
+                <h:button styleClass="btn btn-default" value="Pokaż" rendered="#{listCouriers.canSelect()}" outcome="view_courier.xhtml">
                     <f:param name="courier" value="#{courier.id}"/>
                 </h:button>
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Lista paczek" outcome="list_packs.xhtml" >
+                <h:button styleClass="btn btn-default" value="Lista paczek" rendered="#{listPacks.canSelect()}" outcome="list_packs.xhtml" >
                     <f:param name="courier" value="#{courier.id}" />
                 </h:button>
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Edytuj" outcome="edit_courier.xhtml">
+                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listCouriers.canSave()}" outcome="edit_courier.xhtml">
                     <f:param name="courier" value="#{courier.id}"/>
                 </h:button>
             </h:column>
 
             <h:column>
                 <h:form>
-                    <h:commandButton styleClass="btn btn-danger" value="Usuń" action="#{listCouriers.removeCourier(courier)}"/>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń"  rendered="#{listCouriers.canRemove()}" action="#{listCouriers.removeCourier(courier)}"/>
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:button  styleClass="btn btn-primary" value="Nowy kurier" outcome="edit_courier.xhtml"/>
+        <h:button  styleClass="btn btn-primary" value="Nowy kurier"  rendered="#{listCouriers.canSave()}" outcome="edit_courier.xhtml"/>
     </ui:define>
 </ui:composition>

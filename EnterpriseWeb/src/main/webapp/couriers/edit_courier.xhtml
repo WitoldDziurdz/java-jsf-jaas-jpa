@@ -45,7 +45,7 @@
 
             </h:panelGrid>
 
-            <h:commandButton styleClass="btn btn-primary" value="Zapisz" action="#{editCourier.saveCourier()}"/>
+            <h:commandButton styleClass="btn btn-primary" value="Zapisz" rendered="#{listCouriers.canSave()}" action="#{editCourier.saveCourier()}"/>
             <h:button styleClass="btn btn-default ml-1" value="Powrót" outcome="list_couriers.xhtml"/>
         </h:form>
 

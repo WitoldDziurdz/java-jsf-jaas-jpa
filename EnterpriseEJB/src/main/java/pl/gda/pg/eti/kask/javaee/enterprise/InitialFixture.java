@@ -1,10 +1,7 @@
 package pl.gda.pg.eti.kask.javaee.enterprise;
 
 import lombok.extern.java.Log;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.Author;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.Book;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.Comics;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
+import pl.gda.pg.eti.kask.javaee.enterprise.entities.*;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User.Roles;
 import pl.gda.pg.eti.kask.javaee.enterprise.users.CryptUtils;
 
@@ -13,14 +10,9 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static pl.gda.pg.eti.kask.javaee.enterprise.entities.Cover.HARD;
-import static pl.gda.pg.eti.kask.javaee.enterprise.entities.Cover.SOFT;
 
 @Singleton
 @Startup
@@ -35,9 +27,8 @@ public class InitialFixture {
         Long authorsCount = em.createNamedQuery(Author.Queries.COUNT_ALL, Long.class).getSingleResult();
 
         if (authorsCount == 0) {
-            try {
                 List<User> users = asList(
-                        new User("admin", CryptUtils.sha256("admin"), asList(Roles.ADMIN, Roles.USER)),
+                        new User("admin", CryptUtils.sha256("admin"), asList(Roles.ADMIN, Roles.USER, Roles.MANAGER, Roles.WORKER)),
                         new User("user1", CryptUtils.sha256("p@ss1"), asList(Roles.USER)),
                         new User("user2", CryptUtils.sha256("p@ss2"), asList(Roles.USER)),
                         new User("manager1", CryptUtils.sha256("manager1"), asList(Roles.MANAGER)),
@@ -49,32 +40,40 @@ public class InitialFixture {
                 users.forEach(user -> em.persist(user));
                 em.flush();
 
-                List<Author> authors = asList(
-                        new Author("Orson Scott", "Card"),
-                        new Author("Aaron", "Johnston"),
-                        new Author("Maciej", "Guzek"),
-                        new Author("Maja", "Kossakowska"),
-                        new Author("Neil", "Gaiman")
-                );
+                Pack p1 = new Pack(
+                        "Gdansk wyspianskiego 9",
+                        TypeSize.LARGE,
+                        10.22,
+                        false );
+                Pack p2 = new Pack(
+                        "Gdansk wyspianskiego 12",
+                        TypeSize.SMALL,
+                        5,
+                        true );
+                Pack p3 = new Pack(
+                        "Gdansk wyspianskiego 22",
+                        TypeSize.MEDIUM,
+                        5,
+                        true );
 
-                authors.forEach(author -> em.persist(author));
-                em.flush();
+                Department d1 = new Department( 12, "Warszawa",false);
+                Department d2 = new Department(22, "Gdansk",true);
 
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                List<Book> books = asList(
-                        new Book("Gra Endera", SOFT, format.parse("2011-02-15"), asList(authors.get(0)), users.get(1)),
-                        new Book("Trzeci Świat", SOFT, format.parse("2009-10-01"), asList(authors.get(2)), users.get(1)),
-                        new Book("W Przededniu", SOFT, format.parse("2013-03-19"), asList(authors.get(0), authors.get(1)), users.get(1)),
-                        new Book("Ruda Sfora", SOFT, format.parse("2011-01-14"), asList(authors.get(3)), users.get(2)),
-                        new Comics("Sandman - Pora Mgieł", HARD, format.parse("2010-05-17 00:00:00"), 4, asList(authors.get(4)), users.get(2))
-                );
+                Courier c1 = new Courier("Hubert", "Polak","570434267",22,asList(p1,p2), d1);
+                Courier c2 = new Courier("Piotr", "Majewski","570434211",44,asList(p3), d2);
+                Courier c3 = new Courier("Krystian", "Olejnik","570431267",15,asList(p1,p2),d1);
+                Courier c4 = new Courier("Oskar", "Nawrocki","570434331",19,asList(p3),d2);
 
-                books.forEach(book -> em.persist(book));
+                em.persist(p1);
+                em.persist(p2);
+                em.persist(p3);
+                em.persist(c1);
+                em.persist(c2);
+                em.persist(c3);
+                em.persist(c4);
+                em.persist(d1);
+                em.persist(d2);
 
-            } catch (ParseException e) {
-                log.severe("Initial fixture failed");
-            }
         }
     }
-
 }

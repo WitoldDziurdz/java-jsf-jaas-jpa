@@ -26,26 +26,27 @@
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Pokaż" outcome="view_pack.xhtml">
+                <h:button styleClass="btn btn-default" value="Pokaż" rendered="#{listPacks.canSelect()}" outcome="view_pack.xhtml">
                     <f:param name="pack" value="#{pack.id}"/>
                 </h:button>
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Edytuj" outcome="edit_pack.xhtml">
+                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listPacks.canSave()}" outcome="edit_pack.xhtml">
                     <f:param name="pack" value="#{pack.id}"/>
                 </h:button>
             </h:column>
 
             <h:column>
                 <h:form>
-                    <h:commandButton styleClass="btn btn-danger" value="Usuń" action="#{listPacks.removePack(pack)}"/>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listPacks.canRemove()}" action="#{listPacks.removePack(pack)}"/>
                 </h:form>
             </h:column>
         </h:dataTable>
         <h:panelGrid styleClass="table table-striped" columns="2">
             <h:form>
                 <h:commandButton styleClass="btn btn-primary" value="Filtrowac po cenie: "
+                                 rendered="#{listPacks.canSelect()}"
                                  action="#{listPacks.filtrByPrice()}"/>
                 <h:outputLabel value="Cena: " for="price"/>
                 <h:inputText id="price" value="#{listPacks.price}" converter="javax.faces.Double">
@@ -53,7 +54,7 @@
                 </h:inputText>
             <h:message for="price"/>
             </h:form>
-            <h:button styleClass="btn btn-primary" value="Nowa paczka" outcome="edit_pack.xhtml"/>
+            <h:button styleClass="btn btn-primary" value="Nowa paczka" rendered="#{listPacks.canSave()}" outcome="edit_pack.xhtml"/>
         </h:panelGrid>
     </ui:define>
 </ui:composition>

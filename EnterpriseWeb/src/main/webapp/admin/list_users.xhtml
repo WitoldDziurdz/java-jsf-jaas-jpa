@@ -20,6 +20,11 @@
                     <h:outputText value="#{role} "/>
                 </p:repeat>
             </p:column>
+            <p:column headerText="#{msg.edit}">
+                <p:button value="#{msg.edit}" outcome="edit_roles.xhtml" rendered="#{listUsers.canEdit(user)}">
+                    <f:param name="login" value="#{user.login}"/>
+                </p:button>
+            </p:column>
         </p:dataTable>
     </ui:define>
 

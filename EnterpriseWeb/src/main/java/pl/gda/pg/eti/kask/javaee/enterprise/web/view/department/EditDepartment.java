@@ -5,7 +5,10 @@ import lombok.Setter;
 import pl.gda.pg.eti.kask.javaee.enterprise.books.CourierService;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
+import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
+import pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth.AuthContext;
 
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,6 +20,9 @@ import java.util.Collection;
 public class EditDepartment implements Serializable {
 
     @Inject
+    AuthContext authContext;
+
+    @EJB
     private CourierService courierService;
 
     @Getter
@@ -29,5 +35,10 @@ public class EditDepartment implements Serializable {
     public String saveDepartment() {
         courierService.saveDepartment(department);
         return "list_departments?faces-redirect=true";
+    }
+
+    public boolean canSave(){
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER);
     }
 }
