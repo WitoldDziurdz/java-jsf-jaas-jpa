@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="department" value="#{editDepartment.department}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form>
+            <h:panelGrid styleClass="table table-striped" columns="3">
+                <h:outputLabel value="Adress: " for="address"/>
+                <h:inputText id="address" value="#{editDepartment.department.address}"/>
+                <h:message for="address"/>
+
+                <h:outputLabel value="Liczba pracownikow: " for="numberOfWorkers"/>
+                <h:inputText id="numberOfWorkers" value="#{editDepartment.department.numberOfWorkers}"/>
+                <h:message for="numberOfWorkers"/>
+
+                <h:outputLabel value="Czy jest magazynem: " for="storage"/>
+                <h:selectBooleanCheckbox id="storage" value="#{editDepartment.department.storage}" />
+                <h:message for="storage"/>
+            </h:panelGrid>
+
+            <h:commandButton styleClass="btn btn-primary" value="Zapisz" action="#{editDepartment.saveDepartment()}"/>
+            <h:button styleClass="btn btn-default ml-1" value="Powrót" outcome="list_departments.xhtml"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

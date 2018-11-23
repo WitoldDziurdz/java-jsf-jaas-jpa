@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="courier" value="#{editCourier.courier}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form>
+            <h:panelGrid styleClass="table table-striped" columns="3">
+                <h:outputLabel value="Imie: " for="name"/>
+                <h:inputText id="name" value="#{editCourier.courier.name}"/>
+                <h:message for="name"/>
+
+                <h:outputLabel value="Nazwisko: " for="surname"/>
+                <h:inputText id="surname" value="#{editCourier.courier.surname}"/>
+                <h:message for="surname"/>
+
+                <h:outputLabel value="numer telefonu: " for="phone"/>
+                <h:inputText id="phone" value="#{editCourier.courier.phone}"/>
+                <h:message for="phone"/>
+
+                <h:outputLabel value="wiek: " for="age"/>
+                <h:inputText id="age" value="#{editCourier.courier.age}"/>
+                <h:message for="age"/>
+
+                <h:outputLabel value="Paczki:" for="packs"/>
+                <h:selectManyListbox styleClass="form-control" id="packs" collectionType="java.util.ArrayList"
+                                     value="#{editCourier.courier.packs}">
+                    <f:selectItems value="#{editCourier.availablePacks}" var="pack" itemValue="#{pack}"
+                                   itemLabel="#{pack.id} #{pack.address}"/>
+                </h:selectManyListbox>
+                <h:message errorClass="error" for="packs"/>
+
+                <h:outputLabel value="Oddzial:" for="department"/>
+                <h:selectOneListbox styleClass="form-control" id="department" collectionType="java.util.ArrayList"
+                                    value="#{editCourier.courier.department}">
+                    <f:selectItems value="#{editCourier.availableDepartments}" var="department"
+                                   itemValue="#{department}"
+                                   itemLabel="#{department.id} #{department.address}"/>
+                </h:selectOneListbox>
+                <h:message errorClass="error" for="department"/>
+
+            </h:panelGrid>
+
+            <h:commandButton styleClass="btn btn-primary" value="Zapisz" action="#{editCourier.saveCourier()}"/>
+            <h:button styleClass="btn btn-default ml-1" value="Powrót" outcome="list_couriers.xhtml"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

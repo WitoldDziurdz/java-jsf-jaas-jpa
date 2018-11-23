@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+        <o:socket channel="bookUpdates">
+            <f:ajax event="update" render="books"/>
+        </o:socket>
+
+        <p:dataTable id="books" value="#{listRecentReleases.books}" var="book">
+            <p:column>
+                <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                <h:outputText value="#{book.id}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="#{msg.title}"/></f:facet>
+                <h:outputText value="#{book.title}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="#{msg.creationDate}"/></f:facet>
+                <h:outputText value="#{book.creationDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm"/>
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>

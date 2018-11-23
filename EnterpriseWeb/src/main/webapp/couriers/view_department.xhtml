@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="department" value="#{viewDepartment.department}" required="true"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:panelGrid  styleClass="table table-striped" columns="2">
+            <h:outputLabel value="Numer oddzialu: " for="id"/>
+            <h:outputText id="id" value="#{viewDepartment.department.id}"/>
+            <h:outputLabel value="Adress: " for="address"/>
+            <h:outputText id="address" value="#{viewDepartment.department.address}"/>
+            <h:outputLabel value="Liczba pracownikow: " for="numberOfWorkers"/>
+            <h:outputText id="numberOfWorkers" value="#{viewDepartment.department.numberOfWorkers}"/>
+            <h:outputLabel value="Czy jest magazynem: " for="storage"/>
+            <h:outputText id="storage" value="#{viewDepartment.department.storage}"/>
+        </h:panelGrid>
+
+        <h:button styleClass="btn btn-default" value="Powrót" outcome="list_departments.xhtml"/>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="book" value="#{editBook.book}" converter="#{bookConverter}"/>
+        <f:viewParam name="isComics" value="#{editBook.comics}"/>
+        <f:event type="preRenderView" listener="#{editBook.preRenderView()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h2>Edit book - Step 2: Authors selection</h2>
+
+        <h:form id="form" styleClass="form-horizontal">
+
+            <div class="form-group">
+                <h:outputLabel value="#{msg.authors}:" for="authors" class="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <p:selectManyMenu id="authors" value="#{editBook.book.authors}" converter="#{authorConverter}"
+                                      var="author" filter="true" filterMatchMode="contains" showCheckbox="true"
+                                      style="width: 300px">
+                        <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                        <f:selectItems value="#{editBook.availableAuthors}" var="author" itemValue="#{author}"
+                                       itemLabel="#{author.name} #{author.surname}"/>
+
+                        <p:column>
+                            <h:outputText value="#{author.surname}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{author.name}"/>
+                        </p:column>
+                    </p:selectManyMenu>
+                    <p:message for="authors"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <h:commandButton value="${msg.cancel}" action="#{editBook.cancel()}" immediate="true"
+                                     styleClass="btn btn-default"/>
+                    <h:commandButton value="#{msg.save} &#187;" action="#{editBook.saveBook()}"
+                                     styleClass="btn btn-default pull-right"/>
+                    <h:commandButton value="&#171; #{msg.back}" action="#{editBook.back()}"
+                                     styleClass="btn btn-default pull-right"/>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

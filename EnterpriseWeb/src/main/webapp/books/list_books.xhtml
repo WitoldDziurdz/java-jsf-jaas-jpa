@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+        <p:dataTable id="books" value="#{listBooks.books}" var="book">
+            <p:column headerText="ID" width="60">
+                <h:outputText value="#{book.id}"/>
+            </p:column>
+            <p:column headerText="#{msg.title}">
+                <h:outputText value="#{book.title}"/>
+            </p:column>
+            <p:column headerText="#{msg.authors}">
+                <ui:repeat value="#{book.authors}" var="author">
+                    <h:outputText value="#{author.name} #{author.surname}"/><br/>
+                </ui:repeat>
+            </p:column>
+            <p:column headerText="#{msg.publishDate}">
+                <h:outputText value="#{book.publishDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="#{msg.view}">
+                <p:button value="#{msg.view}" outcome="view_book.xhtml">
+                    <f:param name="book" value="#{book.id}"/>
+                </p:button>
+            </p:column>
+            <p:column headerText="#{msg.edit}">
+                <p:button value="#{msg.edit}" outcome="edit_book_1.xhtml" rendered="#{listBooks.canEdit(book)}">
+                    <f:param name="book" value="#{book.id}"/>
+                </p:button>
+            </p:column>
+            <p:column rendered="#{listBooks.canRemove()}" headerText="#{msg.remove}">
+                <h:form>
+                    <p:commandButton value="#{msg.remove}" actionListener="#{listBooks.removeBook(book)}"
+                                     update=":books" process="@form"/>
+                </h:form>
+            </p:column>
+            <p:column headerText="#{msg.version}">
+                <h:outputText value="#{book.version}"/>
+            </p:column>
+        </p:dataTable>
+
+        <p:button value="#{msg.newBook}" outcome="edit_book_1.xhtml"/>
+        <p:button value="#{msg.newComics}" outcome="edit_book_1.xhtml">
+            <f:param name="isComics" value="#{true}"/>
+        </p:button>
+    </ui:define>
+
+</ui:composition>

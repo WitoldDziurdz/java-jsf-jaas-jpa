@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="msgs" sticky="true"/>
+            <p:remoteCommand name="updateAuthors" update=":form:authors"/>
+
+            <p:dataTable id="authors" value="#{listAuthors.authors}" var="author" editable="true" editMode="cell">
+
+                <p:ajax event="cellEdit" listener="#{listAuthors.onCellEdit(author)}" update=":form:msgs"/>
+
+                <p:column style="width: 36px">
+                    <p:rowToggler/>
+                </p:column>
+
+                <p:column headerText="Id" width="50">
+                    <h:outputText value="#{author.id}"/>
+                </p:column>
+
+                <p:column headerText="Name">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{author.name}"/></f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{author.name}" styleClass="inplace-input" autocomplete="off"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Surname">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{author.surname}"/></f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{author.surname}" styleClass="inplace-input" autocomplete="off"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:rowExpansion>
+                    <h:outputText value="Books by this author:"/><br/>
+                    <p:repeat value="#{author.books}" var="book" varStatus="status">
+                        #{status.index+1}) #{book.title}<br/>
+                    </p:repeat>
+                </p:rowExpansion>
+            </p:dataTable>
+
+            <p:commandButton value="New author" update=":form:authors"
+                             actionListener="#{listAuthors.newAuthor()}"
+                             oncomplete="$('.ui-editable-column:last').prev().click();"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

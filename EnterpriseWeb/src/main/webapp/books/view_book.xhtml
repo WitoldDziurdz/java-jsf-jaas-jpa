@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="book" value="#{viewBook.book}" required="true" converter="#{bookConverter}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:panelGrid columns="2">
+            <h:outputLabel value="#{msg.title}:" for="title"/>
+            <h:outputText id="title" value="#{viewBook.book.title}"/>
+            <h:outputLabel value="#{msg.publishDate}:" for="date"/>
+            <h:outputText id="date" value="#{viewBook.book.publishDate}">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </h:outputText>
+        </h:panelGrid>
+        <h:button value="#{msg.back}" outcome="list_books.xhtml" styleClass="btn btn-default"/>
+    </ui:define>
+
+</ui:composition>

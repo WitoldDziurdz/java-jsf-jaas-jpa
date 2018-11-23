@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="pack" value="#{viewPack.pack}" required="true"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:panelGrid  styleClass="table table-striped" columns="2">
+            <h:outputLabel value="Numer paczki: " for="id"/>
+            <h:outputText id="id" value="#{viewPack.pack.id}"/>
+            <h:outputLabel value="Adress: " for="address"/>
+            <h:outputText id="address" value="#{viewPack.pack.address}"/>
+            <h:outputLabel value="Typ paczki: " for="typeSize"/>
+            <h:outputText id="typeSize" value="#{viewPack.pack.typeSize}"/>
+            <h:outputLabel value="Cena: " for="price"/>
+            <h:outputText id="price" value="#{viewPack.pack.price}"/>
+            <h:outputLabel value="Ekspresowa: " for="express"/>
+            <h:outputText id="express" value="#{viewPack.pack.express}"/>
+        </h:panelGrid>
+
+        <h:button styleClass="btn btn-default" value="Powrót" outcome="list_packs.xhtml"/>
+    </ui:define>
+</ui:composition>

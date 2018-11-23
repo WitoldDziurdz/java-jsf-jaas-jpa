@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="department" value="#{listCouriers.department}"/>
+    </f:metadata>
+    <ui:define name="content">
+        <h:dataTable styleClass="table table-striped table-hover"
+                     value="#{listCouriers.couriers}" var="courier">
+            <h:column>
+                <h:outputText value="#{courier.id}"/>
+            </h:column>
+            <h:column>
+                <h:outputText value="#{courier.name}"/>
+            </h:column>
+            <h:column>
+                <h:outputText value="#{courier.surname}"/>
+            </h:column>
+            <h:column >
+                <h:outputText value="#{courier.age}" />
+            </h:column>
+            <h:column>
+                <h:outputText value="#{courier.phone}" />
+            </h:column>
+
+            <h:column>
+                <h:button styleClass="btn btn-default" value="Pokaż" outcome="view_courier.xhtml">
+                    <f:param name="courier" value="#{courier.id}"/>
+                </h:button>
+            </h:column>
+
+            <h:column>
+                <h:button styleClass="btn btn-default" value="Lista paczek" outcome="list_packs.xhtml" >
+                    <f:param name="courier" value="#{courier.id}" />
+                </h:button>
+            </h:column>
+
+            <h:column>
+                <h:button styleClass="btn btn-default" value="Edytuj" outcome="edit_courier.xhtml">
+                    <f:param name="courier" value="#{courier.id}"/>
+                </h:button>
+            </h:column>
+
+            <h:column>
+                <h:form>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń" action="#{listCouriers.removeCourier(courier)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:button  styleClass="btn btn-primary" value="Nowy kurier" outcome="edit_courier.xhtml"/>
+    </ui:define>
+</ui:composition>

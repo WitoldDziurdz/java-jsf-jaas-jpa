@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <h:dataTable styleClass="table table-striped table-hover"
+                     value="#{listDepartments.departments}" var="department">
+            <h:column>
+                <h:outputText value="#{department.id}"/>
+            </h:column>
+            <h:column>
+                <h:outputText value="#{department.address}"/>
+            </h:column>
+            <h:column>
+                <h:outputText value="#{department.numberOfWorkers}"/>
+            </h:column>
+            <h:column >
+                <h:outputText value="#{department.storage}" />
+            </h:column>
+            <h:column>
+                <h:button styleClass="btn btn-default" value="Pokaż" outcome="view_department.xhtml">
+                    <f:param name="department" value="#{department.id}"/>
+                </h:button>
+            </h:column>
+            <h:column>
+                <h:button styleClass="btn btn-default" value="Lista kurierow" outcome="list_couriers.xhtml" >
+                    <f:param name="department" value="#{department.id}" />
+                </h:button>
+            </h:column>
+            <h:column>
+                <h:button styleClass="btn btn-default" value="Edytuj" outcome="edit_department.xhtml">
+                    <f:param name="department" value="#{department.id}"/>
+                </h:button>
+            </h:column>
+            <h:column>
+                <h:form>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń" action="#{listDepartments.removeDepartments(department)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:button  styleClass="btn btn-primary" value="Nowy oddzial" outcome="edit_department.xhtml"/>
+    </ui:define>
+</ui:composition>

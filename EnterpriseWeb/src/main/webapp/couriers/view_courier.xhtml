@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="courier" value="#{viewCourier.courier}" required="true"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:panelGrid styleClass="table table-striped" columns="2">
+            <h:outputLabel value="Imie: " for="name"/>
+            <h:outputText id="name" value="#{viewCourier.courier.name}"/>
+            <h:outputLabel value="Nazwisko: " for="surname"/>
+            <h:outputText id="surname" value="#{viewCourier.courier.surname}"/>
+            <h:outputLabel value="numer telefonu: " for="phone"/>
+            <h:outputText id="phone" value="#{viewCourier.courier.phone}"/>
+            <h:outputLabel value="wiek: " for="age"/>
+            <h:outputText id="age" value="#{viewCourier.courier.age}"/>
+        </h:panelGrid>
+
+        <h:button styleClass="btn btn-default" value="Powrót" outcome="list_couriers.xhtml"/>
+    </ui:define>
+</ui:composition>

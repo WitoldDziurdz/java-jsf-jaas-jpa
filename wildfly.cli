@@ -1,0 +1,55 @@
+# ./jboss-cli.sh --connect --file=/sciezka/do/pliku/wildfly.cli
+
+# Połączenie z bazą danych
+if (outcome != success) of /subsystem=datasources/data-source=books-jaas:read-resource
+    data-source add \
+         --name=books-jaas \
+         --driver-name=h2 \
+         --driver-class=org.h2.Driver \
+         --connection-url=jdbc:h2:mem:books-jaas;DB_CLOSE_DELAY=-1 \
+         --jndi-name=java:/books-jaas \
+         --user-name=sa \
+         --password=sa \
+
+    data-source enable --name=books-jaas
+end-if
+
+
+if (outcome == success) of /subsystem=security/security-domain=books:read-resource
+  /subsystem=security/security-domain=books:remove
+  reload
+end-if
+
+
+# Domena bezpieczeństwa
+if (outcome != success) of /subsystem=security/security-domain=books:read-resource
+    /subsystem=security/security-domain=books:add(cache-type="default")
+
+# Metoda uwierzytelniania dla domeny bezpieczeństwa
+    /subsystem=security/security-domain=books \
+     /authentication=classic:add( \
+       login-modules=[ \
+       { \
+         code="pl.gda.pg.eti.kask.javaee.enterprise.auth.JwtLoginModule", \
+         flag="sufficient" \
+       }, \
+       { \
+         code="Database", \
+         flag="sufficient", \
+         module-options={ \
+           dsJndiName="java:/books-jaas", \
+           principalsQuery="select PASSWORD from USER where LOGIN=?", \
+           rolesQuery="select ur.ROLES, 'Roles' \
+                       from USER_ROLES ur JOIN USER u ON u.ID = ur.USER_ID \
+                       where u.LOGIN = ?", \
+           hashAlgorithm="SHA-256", \
+           hashEncoding="hex", \
+           unauthenticatedIdentity="guest" \
+         } \
+       } \
+     ])
+end-if
+
+
+# Załadowanie nowej konfiguracji w uruchomionym serwerze
+reload

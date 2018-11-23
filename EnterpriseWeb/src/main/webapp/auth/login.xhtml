@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="head">
+        <title>#{msg.login}</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <h2>Server enforced login</h2>
+        <form class="form-horizontal" method="post" action="j_security_check">
+            <div class="form-group">
+                <label for="login" class="col-sm-2 control-label">#{msg.login}</label>
+                <div class="col-sm-10">
+                    <input class="form-control" autofocus="autofocus" id="login" placeholder="login" name="j_username"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">#{msg.password}</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" placeholder="password" name="j_password"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" value="#{msg.submitLogin}" class="btn btn-default"/>
+                </div>
+            </div>
+        </form>
+    </ui:define>
+
+</ui:composition>
+

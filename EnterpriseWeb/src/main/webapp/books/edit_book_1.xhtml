@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="book" value="#{editBook.book}" converter="#{bookConverter}"/>
+        <f:viewParam name="isComics" value="#{editBook.comics}"/>
+        <f:event type="preRenderView" listener="#{editBook.preRenderView()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h2>Edit book - Step 1: Basic information</h2>
+
+        <h:form id="form" styleClass="form-horizontal">
+            <div class="form-group">
+                <h:outputLabel value="#{msg.title}:" for="title" class="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <p:inputText id="title" value="#{editBook.book.title}" class="form-control" autocomplete="off">
+                        <p:clientValidator event="keyup"/>
+                    </p:inputText>
+                    <p:message for="title"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel value="#{msg.publishDate}:" for="date" class="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <h:inputText id="date" value="#{editBook.book.publishDate}" required="true" class="form-control">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
+                    <p:message for="date"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel value="#{msg.cover}:" for="cover" class="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <h:selectOneMenu id="cover" value="#{editBook.book.cover}" class="form-control">
+                        <f:selectItems value="#{editBook.coverTypes}" var="cover" itemValue="#{cover}"
+                                       itemLabel="#{cover.name()}"/>
+                    </h:selectOneMenu>
+                    <p:message for="cover"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel value="#{msg.volume}:" for="volume" rendered="#{editBook.comics}"
+                               class="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <h:inputText id="volume" value="#{editBook.book.volume}" rendered="#{editBook.comics}"
+                                 class="form-control"/>
+                    <p:message for="volume" rendered="#{editBook.comics}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <h:commandButton value="${msg.cancel}" action="#{editBook.cancel()}" immediate="true"
+                                     styleClass="btn btn-default"/>
+                    <p:commandButton value="${msg.next} &#187;" action="#{editBook.next()}"
+                                     styleClass="btn btn-default pull-right" validateClient="true" />
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="courier" value="#{listPacks.courier}"/>
+        <f:viewParam name="price" value="#{listPacks.price}" converter="javax.faces.Double"/>
+    </f:metadata>
+    <ui:define name="content">
+        <h:dataTable styleClass="table table-striped table-hover" value="#{listPacks.packs}" var="pack">
+            <h:column>
+                <h:outputText value="#{pack.id}"/>
+            </h:column>
+            <h:column>
+                <h:outputText value="#{pack.address}"/>
+            </h:column>
+            <h:column>
+                <h:outputText value="#{pack.typeSize}"/>
+            </h:column>
+            <h:column>
+                <h:outputText value="#{pack.price}"/>
+            </h:column>
+            <h:column>
+                <h:outputText value="#{pack.express}"/>
+            </h:column>
+
+            <h:column>
+                <h:button styleClass="btn btn-default" value="Pokaż" outcome="view_pack.xhtml">
+                    <f:param name="pack" value="#{pack.id}"/>
+                </h:button>
+            </h:column>
+
+            <h:column>
+                <h:button styleClass="btn btn-default" value="Edytuj" outcome="edit_pack.xhtml">
+                    <f:param name="pack" value="#{pack.id}"/>
+                </h:button>
+            </h:column>
+
+            <h:column>
+                <h:form>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń" action="#{listPacks.removePack(pack)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:panelGrid styleClass="table table-striped" columns="2">
+            <h:form>
+                <h:commandButton styleClass="btn btn-primary" value="Filtrowac po cenie: "
+                                 action="#{listPacks.filtrByPrice()}"/>
+                <h:outputLabel value="Cena: " for="price"/>
+                <h:inputText id="price" value="#{listPacks.price}" converter="javax.faces.Double">
+                    <f:validateDoubleRange minimum = "0.0"/>
+                </h:inputText>
+            <h:message for="price"/>
+            </h:form>
+            <h:button styleClass="btn btn-primary" value="Nowa paczka" outcome="edit_pack.xhtml"/>
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>

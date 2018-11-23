@@ -1,0 +1,55 @@
+# ./jboss-cli.sh --connect --file=/sciezka/do/pliku/wildfly.cli
+
+# Połączenie z bazą danych
+if (outcome != success) of /subsystem=datasources/data-source=couriers-jaas:read-resource
+    data-source add \
+         --name=couriers-jaas \
+         --driver-name=h2 \
+         --driver-class=org.h2.Driver \
+         --connection-url=jdbc:h2:mem:couriers-jaas;DB_CLOSE_DELAY=-1 \
+         --jndi-name=java:/couriers-jaas \
+         --user-name=sa \
+         --password=sa \
+
+    data-source enable --name=couriers-jaas
+end-if
+
+
+if (outcome == success) of /subsystem=security/security-domain=couriers:read-resource
+  /subsystem=security/security-domain=couriers:remove
+  reload
+end-if
+
+
+# Domena bezpieczeństwa
+if (outcome != success) of /subsystem=security/security-domain=couriers:read-resource
+    /subsystem=security/security-domain=couriers:add(cache-type="default")
+
+# Metoda uwierzytelniania dla domeny bezpieczeństwa
+    /subsystem=security/security-domain=couriers \
+     /authentication=classic:add( \
+       login-modules=[ \
+       { \
+         code="pl.gda.pg.eti.kask.javaee.enterprise.auth.JwtLoginModule", \
+         flag="sufficient" \
+       }, \
+       { \
+         code="Database", \
+         flag="sufficient", \
+         module-options={ \
+           dsJndiName="java:/couriers-jaas", \
+           principalsQuery="select PASSWORD from USER where LOGIN=?", \
+           rolesQuery="select ur.ROLES, 'Roles' \
+                       from USER_ROLES ur JOIN USER u ON u.ID = ur.USER_ID \
+                       where u.LOGIN = ?", \
+           hashAlgorithm="SHA-256", \
+           hashEncoding="hex", \
+           unauthenticatedIdentity="guest" \
+         } \
+       } \
+     ])
+end-if
+
+
+# Załadowanie nowej konfiguracji w uruchomionym serwerze
+reload

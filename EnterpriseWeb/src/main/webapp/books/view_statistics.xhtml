@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+        <o:socket channel="bookUpdates">
+            <f:ajax event="update" render="charts"/>
+        </o:socket>
+
+        <p:outputPanel id="charts">
+            <h3>Number of books written by authors</h3>
+            <p:chart type="bar" model="#{viewStatistics.barChartModel}"
+                     style="height:400px" responsive="true"/>
+
+            <h3>Authors contribution</h3>
+            <p:chart type="pie" model="#{viewStatistics.pieChartModel}"
+                     style="height:400px" responsive="true"/>
+
+            <h3>Books' publication timeline</h3>
+            <p:timeline value="#{viewStatistics.timelineModel}" height="250px"
+                        showNavigation="true"/>
+        </p:outputPanel>
+    </ui:define>
+
+</ui:composition>
