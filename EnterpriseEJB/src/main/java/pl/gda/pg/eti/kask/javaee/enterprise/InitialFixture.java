@@ -29,8 +29,6 @@ public class InitialFixture {
         if (authorsCount == 0) {
                 List<User> users = asList(
                         new User("admin", CryptUtils.sha256("admin"), asList(Roles.ADMIN, Roles.USER, Roles.MANAGER, Roles.WORKER)),
-                        new User("user1", CryptUtils.sha256("p@ss1"), asList(Roles.USER)),
-                        new User("user2", CryptUtils.sha256("p@ss2"), asList(Roles.USER)),
                         new User("manager1", CryptUtils.sha256("manager1"), asList(Roles.MANAGER)),
                         new User("manager2", CryptUtils.sha256("manager2"), asList(Roles.MANAGER)),
                         new User("worker1", CryptUtils.sha256("worker1"), asList(Roles.WORKER)),

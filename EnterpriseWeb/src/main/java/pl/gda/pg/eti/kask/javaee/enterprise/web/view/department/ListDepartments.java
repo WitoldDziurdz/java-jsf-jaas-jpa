@@ -1,6 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.web.view.department;
 
-import pl.gda.pg.eti.kask.javaee.enterprise.books.CourierService;
+import pl.gda.pg.eti.kask.javaee.enterprise.couriers.CourierService;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
 import pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth.AuthContext;

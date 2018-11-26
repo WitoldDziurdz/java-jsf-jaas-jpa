@@ -2,7 +2,7 @@ package pl.gda.pg.eti.kask.javaee.enterprise.web.view.department;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.gda.pg.eti.kask.javaee.enterprise.books.CourierService;
+import pl.gda.pg.eti.kask.javaee.enterprise.couriers.CourierService;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;

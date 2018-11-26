@@ -1,14 +1,12 @@
-package pl.gda.pg.eti.kask.javaee.enterprise.books;
+package pl.gda.pg.eti.kask.javaee.enterprise.couriers;
 
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
-import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
