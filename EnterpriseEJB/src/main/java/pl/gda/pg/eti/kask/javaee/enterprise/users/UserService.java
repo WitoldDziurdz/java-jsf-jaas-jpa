@@ -4,7 +4,6 @@
  */
 package pl.gda.pg.eti.kask.javaee.enterprise.users;
 
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
 
 import javax.annotation.Resource;
