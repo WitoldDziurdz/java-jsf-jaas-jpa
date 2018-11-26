@@ -2,7 +2,6 @@ package pl.gda.pg.eti.kask.javaee.enterprise.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.validators.InPast;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
