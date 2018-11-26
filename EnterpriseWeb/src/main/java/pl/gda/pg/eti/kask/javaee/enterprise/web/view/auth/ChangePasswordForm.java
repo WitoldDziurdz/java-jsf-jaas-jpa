@@ -3,10 +3,8 @@ package pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth;
 import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.util.Messages;
-import org.omnifaces.util.Utils;
 import pl.gda.pg.eti.kask.javaee.enterprise.users.CryptUtils;
 import pl.gda.pg.eti.kask.javaee.enterprise.users.UserService;
-import pl.gda.pg.eti.kask.javaee.enterprise.web.JSFUtils;
 
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;

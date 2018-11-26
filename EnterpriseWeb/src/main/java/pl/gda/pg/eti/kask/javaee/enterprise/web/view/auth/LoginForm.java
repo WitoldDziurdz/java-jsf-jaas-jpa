@@ -7,7 +7,6 @@ import org.omnifaces.util.Messages;
 import pl.gda.pg.eti.kask.javaee.enterprise.web.JSFUtils;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

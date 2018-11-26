@@ -2,7 +2,6 @@ package pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.TypeSize;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
 import pl.gda.pg.eti.kask.javaee.enterprise.users.UserService;
 
