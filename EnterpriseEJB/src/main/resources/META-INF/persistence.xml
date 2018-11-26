@@ -4,9 +4,6 @@
   <persistence-unit name="JSFJPA_PU" transaction-type="JTA">
     <jta-data-source>java:/couriers-jaas</jta-data-source>
 
-    <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Author</class>
-    <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Book</class>
-    <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Comics</class>
     <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.User</class>
     <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack</class>
     <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Department</class>
