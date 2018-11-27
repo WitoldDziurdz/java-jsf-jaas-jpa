@@ -47,13 +47,13 @@ public class UserService {
         em.merge(user);
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.USER, User.Roles.MANAGER, User.Roles.WORKER})
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public User findCurrentUser() {
         String login = sessionCtx.getCallerPrincipal().getName();
         return findUserByLogin(login);
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.USER, User.Roles.MANAGER, User.Roles.WORKER})
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public void changePassword(String newPassword, String oldPassword) throws ServletException {
         User user = findCurrentUser();
         if(user.getPassword().equals(oldPassword)){

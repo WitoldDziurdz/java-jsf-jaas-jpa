@@ -25,7 +25,7 @@ public class InitialFixture {
     @PostConstruct
     public void init() {
         List<User> users = asList(
-                new User("admin", CryptUtils.sha256("admin"), asList(Roles.ADMIN, Roles.USER, Roles.MANAGER, Roles.WORKER)),
+                new User("admin", CryptUtils.sha256("admin"), asList(Roles.ADMIN, Roles.MANAGER, Roles.WORKER)),
                 new User("manager1", CryptUtils.sha256("manager1"), asList(Roles.MANAGER)),
                 new User("manager2", CryptUtils.sha256("manager2"), asList(Roles.MANAGER)),
                 new User("worker1", CryptUtils.sha256("worker1"), asList(Roles.WORKER)),
