@@ -19,11 +19,13 @@ import static javax.persistence.CascadeType.*;
 @Getter
 @Setter
 @NamedQueries({
-        @NamedQuery(name = Courier.Queries.FIND_ALL, query = "select c from Courier c")
+        @NamedQuery(name = Courier.Queries.FIND_ALL, query = "select c from Courier c"),
+        @NamedQuery(name = Courier.Queries.FIND_ALL_SORT, query = "select c from Courier c order by c.modificationDate desc")
 })
 public class Courier extends Audit implements Serializable {
     public static class Queries {
         public static final String FIND_ALL = "COURIER_FIND_ALL";
+        public static final String FIND_ALL_SORT = "COURIER_FIND_ALL_SORT";
     }
 
     @Id
