@@ -8,6 +8,7 @@
     <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack</class>
     <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Department</class>
     <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier</class>
+    <class>pl.gda.pg.eti.kask.javaee.enterprise.entities.Role</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
     <shared-cache-mode>ALL</shared-cache-mode>

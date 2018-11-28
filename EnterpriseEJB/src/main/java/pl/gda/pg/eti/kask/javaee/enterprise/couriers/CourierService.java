@@ -1,12 +1,19 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.couriers;
 
+import pl.gda.pg.eti.kask.javaee.enterprise.books.auth.PackAnnotation;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
+import pl.gda.pg.eti.kask.javaee.enterprise.events.CourierEvent;
+import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierCreation;
+import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierDeletion;
+import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierModification;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -20,6 +27,9 @@ public class CourierService implements Serializable {
 
     @PersistenceContext
     EntityManager em;
+
+    @Inject
+    Event<CourierEvent> courierEvent;
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public Collection<Pack> findAllPacks() {
@@ -42,6 +52,12 @@ public class CourierService implements Serializable {
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public Collection<Courier> findAllCouriers() {
         TypedQuery<Courier> query = em.createNamedQuery(Courier.Queries.FIND_ALL, Courier.class);
+        return query.getResultList();
+    }
+
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
+    public Collection<Courier> findAllSortCouriers() {
+        TypedQuery<Courier> query = em.createNamedQuery(Courier.Queries.FIND_ALL_SORT, Courier.class);
         return query.getResultList();
     }
 
@@ -77,13 +93,14 @@ public class CourierService implements Serializable {
         return em.find(Department.class, id);
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
+    @PackAnnotation
     @Transactional
     public void removePack(Pack pack) {
         pack = em.merge(pack);
         for(Courier courier:pack.getCouriers()){
             courier.getPacks().remove(pack);
         }
+        updateCouriers(pack.getCouriers());
         em.remove(pack);
     }
 
@@ -92,22 +109,26 @@ public class CourierService implements Serializable {
     public void removeCourier(Courier courier) {
         courier = em.merge(courier);
         em.remove(courier);
+        courierEvent.select(CourierDeletion.Literal).fire(CourierEvent.of(courier));
     }
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
     @Transactional
     public void removeDepartment(Department department) {
         department = em.merge(department);
+        Collection<Courier> couriers = department.getCouriers();
         em.remove(department);
+        deleteCouriers(couriers);
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
+    @PackAnnotation
     @Transactional
     public Pack savePack(Pack pack) {
         if (pack.getId() == null) {
             em.persist(pack);
         } else {
             pack = em.merge(pack);
+            updateCouriers(pack.getCouriers());
         }
 
         return pack;
@@ -118,8 +139,10 @@ public class CourierService implements Serializable {
     public Courier saveCourier(Courier courier) {
         if (courier.getId() == null) {
             em.persist(courier);
+            courierEvent.select(CourierCreation.Literal).fire(CourierEvent.of(courier));
         } else {
             courier = em.merge(courier);
+            courierEvent.select(CourierModification.Literal).fire(CourierEvent.of(courier));
         }
 
         return courier;
@@ -132,7 +155,20 @@ public class CourierService implements Serializable {
             em.persist(department);
         } else {
             department = em.merge(department);
+            updateCouriers(department.getCouriers());
         }
         return department;
+    }
+
+    private void updateCouriers(Collection<Courier> couriers){
+        for(Courier courier: couriers){
+            courierEvent.select(CourierModification.Literal).fire(CourierEvent.of(courier));
+        }
+    }
+
+    private void deleteCouriers(Collection<Courier> couriers){
+        for(Courier courier: couriers){
+            courierEvent.select(CourierDeletion.Literal).fire(CourierEvent.of(courier));
+        }
     }
 }

@@ -92,6 +92,12 @@
                         </h:link>
                     </li>
                     <li>
+                        <h:link outcome="/couriers/list_recent_couriers.xhtml">
+                            <i class="fa fa-users fa-fw"></i>
+                            <h:outputText value="Ostatnio zmodyfikowani kurierzy"/>
+                        </h:link>
+                    </li>
+                    <li>
                         <h:link rendered="#{main.admin}" outcome="/admin/list_users.xhtml">
                             <i class="fa fa-users fa-fw"></i>
                             <h:outputText value="Użytkownicy"/>

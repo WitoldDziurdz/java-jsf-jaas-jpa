@@ -50,5 +50,10 @@ public class Department extends Audit implements Serializable {
         this.address = address;
         this.isStorage = isStorage;
     }
+
+    @Override
+    public String toString(){
+        return  this.id + " " + this.address;
+    }
 }
 

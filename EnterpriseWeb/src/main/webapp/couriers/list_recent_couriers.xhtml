@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+        <o:socket channel="courierUpdates">
+            <f:ajax event="update" render="couriers"/>
+        </o:socket>
+
+        <p:dataTable id="couriers" value="#{listRecentCouriers.couriers}" var="courier">
+            <p:column>
+                <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                <h:outputText value="#{courier.id}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="Imie"/></f:facet>
+                <h:outputText value="#{courier.name}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="Nazwisko"/></f:facet>
+                <h:outputText value="#{courier.surname}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="wiek"/></f:facet>
+                <h:outputText value="#{courier.age}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="Telefon"/></f:facet>
+                <h:outputText value="#{courier.phone}"/>
+            </p:column>
+            <p:column style="width: 300px">
+                <f:facet name="header"><h:outputText value="Oddzial"/></f:facet>
+                <p:dataTable id="department" value="#{courier.department}" var="department">
+                    <p:column style="width: 50px">
+                        <h:outputText value="#{department.id}"/>
+                    </p:column>
+                    <p:column style="width: 200px">
+                        <h:outputText value="#{department.address}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:column>
+            <p:column style="width: 300px">
+                <f:facet name="header"><h:outputText value="Paczki"/></f:facet>
+                <p:dataTable id="packs" value="#{courier.packs}" var="pack">
+                    <p:column style="width: 50px">
+                        <h:outputText value="#{pack.id}"/>
+                    </p:column>
+                    <p:column style="width: 200px">
+                        <h:outputText value="#{pack.address}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header"><h:outputText value="#{msg.creationDate}"/></f:facet>
+                <h:outputText value="#{courier.creationDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm"/>
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="#{msg.modificationDate}"/></f:facet>
+                <h:outputText value="#{courier.modificationDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm"/>
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>

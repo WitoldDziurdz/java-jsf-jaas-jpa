@@ -1,5 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,13 +53,19 @@ public class Pack implements Serializable {
     @ManyToMany(mappedBy = "packs",cascade={MERGE, REFRESH, DETACH})
     private List<Courier> couriers = new ArrayList<>();
 
+    @Getter
+    @Setter
+    @ManyToOne
+    @NotNull
+    @JsonIgnore
+    private User owner;
 
-
-    public Pack(String address, TypeSize typeSize, double price, boolean express) {
+    public Pack(String address, TypeSize typeSize, double price, boolean express, User owner) {
         this.address = address;
         this.typeSize = typeSize;
         this.price = price;
         this.express = express;
+        this.owner = owner;
     }
 
     @Override

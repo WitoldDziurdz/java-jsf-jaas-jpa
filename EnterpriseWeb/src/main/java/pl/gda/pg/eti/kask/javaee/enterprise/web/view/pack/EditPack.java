@@ -5,6 +5,7 @@ import lombok.Setter;
 import pl.gda.pg.eti.kask.javaee.enterprise.couriers.CourierService;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.TypeSize;
+import pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth.AuthContext;
 
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
@@ -20,6 +21,9 @@ public class EditPack implements Serializable {
 
     @Inject
     private CourierService courierService;
+
+    @Inject
+    AuthContext authContext;
 
     @Getter
     @Setter
@@ -40,6 +44,7 @@ public class EditPack implements Serializable {
 
 
     public String savePack() {
+        pack.setOwner(authContext.getCurrentUser());
         courierService.savePack(pack);
         return "list_packs?faces-redirect=true";
     }
