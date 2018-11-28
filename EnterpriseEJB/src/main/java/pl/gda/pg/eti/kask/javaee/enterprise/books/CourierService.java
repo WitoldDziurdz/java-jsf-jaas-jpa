@@ -1,19 +1,17 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.books;
 
+import pl.gda.pg.eti.kask.javaee.enterprise.books.auth.PackAnnotation;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
-import pl.gda.pg.eti.kask.javaee.enterprise.events.BookEvent;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.CourierEvent;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierCreation;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierDeletion;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierModification;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -95,7 +93,7 @@ public class CourierService implements Serializable {
         return em.find(Department.class, id);
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
+    @PackAnnotation
     @Transactional
     public void removePack(Pack pack) {
         pack = em.merge(pack);
@@ -123,7 +121,7 @@ public class CourierService implements Serializable {
         deleteCouriers(couriers);
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
+    @PackAnnotation
     @Transactional
     public Pack savePack(Pack pack) {
         if (pack.getId() == null) {
