@@ -1,6 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.couriers;
 
-import pl.gda.pg.eti.kask.javaee.enterprise.books.auth.PackAnnotation;
+import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.PackAnnotation;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;

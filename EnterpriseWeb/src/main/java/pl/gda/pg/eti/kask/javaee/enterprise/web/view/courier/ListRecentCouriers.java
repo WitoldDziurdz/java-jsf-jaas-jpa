@@ -1,7 +1,7 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.web.view.courier;
 
 import lombok.Getter;
-import pl.gda.pg.eti.kask.javaee.enterprise.books.CourierService;
+import pl.gda.pg.eti.kask.javaee.enterprise.couriers.CourierService;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.CourierEvent;
 

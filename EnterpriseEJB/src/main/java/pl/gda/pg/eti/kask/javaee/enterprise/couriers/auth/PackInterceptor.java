@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.kask.javaee.enterprise.books.auth;
+package pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth;
 
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 

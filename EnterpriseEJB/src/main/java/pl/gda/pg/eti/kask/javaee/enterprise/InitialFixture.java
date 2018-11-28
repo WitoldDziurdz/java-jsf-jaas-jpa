@@ -28,7 +28,7 @@ public class InitialFixture {
     public void init() {
 
             initPerm();
-            User admin = new User("admin", CryptUtils.sha256("admin"), asList(Roles.ADMIN, Roles.USER, Roles.MANAGER, Roles.WORKER));
+            User admin = new User("admin", CryptUtils.sha256("admin"), asList(Roles.ADMIN, Roles.MANAGER, Roles.WORKER));
             User manager1 = new User("manager1", CryptUtils.sha256("manager1"), asList(Roles.MANAGER));
             User manager2 = new User("manager2", CryptUtils.sha256("manager2"), asList(Roles.MANAGER));
             User worker1 = new User("worker1", CryptUtils.sha256("worker1"), asList(Roles.WORKER));
