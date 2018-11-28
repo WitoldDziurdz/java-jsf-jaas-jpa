@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @InterceptorBinding
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PackAnnotation {
+public @interface RoleAnnotation {
 }

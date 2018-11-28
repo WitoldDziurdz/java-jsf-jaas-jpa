@@ -1,8 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.couriers;
 
-import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.CourierAnnotation;
-import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.DepartmentAnnotation;
-import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.PackAnnotation;
+import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.RoleAnnotation;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.*;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.CourierEvent;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierCreation;
@@ -90,7 +88,7 @@ public class CourierService implements Serializable {
         return em.find(Department.class, id);
     }
 
-    @PackAnnotation
+    @RoleAnnotation
     @Transactional
     public void removePack(Pack pack) {
         pack = em.merge(pack);
@@ -101,7 +99,7 @@ public class CourierService implements Serializable {
         em.remove(pack);
     }
 
-   @CourierAnnotation
+    @RoleAnnotation
     @Transactional
     public void removeCourier(Courier courier) {
         courier = em.merge(courier);
@@ -109,7 +107,7 @@ public class CourierService implements Serializable {
         courierEvent.select(CourierDeletion.Literal).fire(CourierEvent.of(courier));
     }
 
-    @DepartmentAnnotation
+    @RoleAnnotation
     @Transactional
     public void removeDepartment(Department department) {
         department = em.merge(department);
@@ -118,7 +116,7 @@ public class CourierService implements Serializable {
         deleteCouriers(couriers);
     }
 
-    @PackAnnotation
+    @RoleAnnotation
     @Transactional
     public Pack savePack(Pack pack) {
         if (pack.getId() == null) {
@@ -132,7 +130,7 @@ public class CourierService implements Serializable {
         return pack;
     }
 
-    @CourierAnnotation
+    @RoleAnnotation
     @Transactional
     public Courier saveCourier(Courier courier) {
         if (courier.getId() == null) {
@@ -147,7 +145,7 @@ public class CourierService implements Serializable {
         return courier;
     }
 
-    @DepartmentAnnotation
+    @RoleAnnotation
     @Transactional
     public Department saveDepartment(Department department){
         if (department.getId() == null) {
