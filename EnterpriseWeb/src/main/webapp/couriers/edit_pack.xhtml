@@ -29,7 +29,7 @@
                 <h:message for="express"/>
             </h:panelGrid>
 
-            <h:commandButton styleClass="btn btn-primary" value="Zapisz" rendered="#{listPacks.canSave()}" action="#{editPack.savePack()}"/>
+            <h:commandButton styleClass="btn btn-primary" value="Zapisz" rendered="#{editPack.canSave()}" action="#{editPack.savePack()}"/>
             <h:button styleClass="btn btn-default ml-1" value="Powrót" outcome="list_packs.xhtml"/>
         </h:form>
 

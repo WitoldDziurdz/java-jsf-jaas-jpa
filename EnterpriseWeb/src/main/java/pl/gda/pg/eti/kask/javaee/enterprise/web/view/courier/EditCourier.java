@@ -7,6 +7,7 @@ import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
+import pl.gda.pg.eti.kask.javaee.enterprise.users.PermissionService;
 import pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth.AuthContext;
 
 import javax.ejb.EJB;
@@ -20,11 +21,11 @@ import java.util.Collection;
 @ViewScoped
 public class EditCourier implements Serializable {
 
-    @Inject
-    AuthContext authContext;
-
     @EJB
     private CourierService courierService;
+
+    @EJB
+    private PermissionService permissionService;
 
     @Getter
     @Setter
@@ -44,8 +45,6 @@ public class EditCourier implements Serializable {
     }
 
     public boolean canSave(){
-        return authContext.isUserInRole(User.Roles.ADMIN) ||
-                authContext.isUserInRole(User.Roles.MANAGER)||
-                authContext.isUserInRole(User.Roles.WORKER);
+        return permissionService.canSaveCourier(courier);
     }
 }

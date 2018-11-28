@@ -65,12 +65,6 @@ public class CourierService implements Serializable {
     }
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
-    public Collection<Courier> findAvailableCouriers() {
-        TypedQuery<Courier> query = em.createNamedQuery(Courier.Queries.FIND_ALL, Courier.class);
-        return query.getResultList();
-    }
-
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public Collection<Department> findAllDepartments() {
         TypedQuery<Department> query = em.createNamedQuery(Department.Queries.FIND_ALL, Department.class);
         return query.getResultList();
@@ -178,7 +172,7 @@ public class CourierService implements Serializable {
         }
     }
 
-    private void setOwner(Audit audit){
-        audit.setOwner(userService.findCurrentUser());
+    private void setOwner(Element element){
+        element.setOwner(userService.findCurrentUser());
     }
 }

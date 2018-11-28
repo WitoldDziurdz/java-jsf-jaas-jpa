@@ -23,13 +23,6 @@ public class Audit implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
 
-    @Getter
-    @Setter
-    @ManyToOne
-    @NotNull
-    @JsonIgnore
-    protected User owner;
-
     @PrePersist
     public void prePersist() {
         creationDate = modificationDate = new Date();

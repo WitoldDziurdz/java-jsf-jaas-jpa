@@ -24,7 +24,7 @@ import static javax.persistence.CascadeType.ALL;
 @NamedQueries({
         @NamedQuery(name = Department.Queries.FIND_ALL, query = "select d from Department d")
 })
-public class Department extends Audit implements Serializable {
+public class Department extends Audit implements Element, Serializable {
     public static class Queries {
         public static final String FIND_ALL = "DEPARTMENT_FIND_ALL";
     }
@@ -45,6 +45,13 @@ public class Department extends Audit implements Serializable {
 
     @OneToMany(cascade = {ALL}, mappedBy = "department")
     private List<Courier> couriers;
+
+    @Getter
+    @Setter
+    @ManyToOne
+    @NotNull
+    @JsonIgnore
+    private User owner;
 
     public Department(int numberOfWorkers, String address, boolean isStorage, User owner) {
         this.numberOfWorkers = numberOfWorkers;

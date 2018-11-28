@@ -23,7 +23,7 @@
                 <h:message for="storage"/>
             </h:panelGrid>
 
-            <h:commandButton styleClass="btn btn-primary" value="Zapisz" rendered="#{listDepartments.canSave()}" action="#{editDepartment.saveDepartment()}"/>
+            <h:commandButton styleClass="btn btn-primary" value="Zapisz" rendered="#{editDepartment.canSave()}" action="#{editDepartment.saveDepartment()}"/>
             <h:button styleClass="btn btn-default ml-1" value="Powrót" outcome="list_departments.xhtml"/>
         </h:form>
 

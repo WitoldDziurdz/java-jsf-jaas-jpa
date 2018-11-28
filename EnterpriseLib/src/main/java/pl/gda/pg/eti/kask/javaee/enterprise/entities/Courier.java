@@ -23,7 +23,7 @@ import static javax.persistence.CascadeType.*;
         @NamedQuery(name = Courier.Queries.FIND_ALL, query = "select c from Courier c"),
         @NamedQuery(name = Courier.Queries.FIND_ALL_SORT, query = "select c from Courier c order by c.modificationDate desc")
 })
-public class Courier extends Audit implements Serializable {
+public class Courier extends Audit implements Element, Serializable {
     public static class Queries {
         public static final String FIND_ALL = "COURIER_FIND_ALL";
         public static final String FIND_ALL_SORT = "COURIER_FIND_ALL_SORT";
@@ -51,6 +51,13 @@ public class Courier extends Audit implements Serializable {
 
     @ManyToMany(cascade={MERGE, REFRESH, DETACH})
     private List<Pack> packs = new ArrayList<>();
+
+    @Getter
+    @Setter
+    @ManyToOne
+    @NotNull
+    @JsonIgnore
+    private User owner;
 
     public Courier(String name, String surname, String phone, int age, List<Pack> packs, Department department, User owner) {
         this.name = name;

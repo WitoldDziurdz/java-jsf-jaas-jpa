@@ -6,6 +6,7 @@ import pl.gda.pg.eti.kask.javaee.enterprise.couriers.CourierService;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
+import pl.gda.pg.eti.kask.javaee.enterprise.users.PermissionService;
 import pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth.AuthContext;
 
 import javax.ejb.EJB;
@@ -18,12 +19,11 @@ import java.util.Collection;
 @Named
 @RequestScoped
 public class ListCouriers implements Serializable {
-
-    @Inject
-    AuthContext authContext;
-
     @EJB
     private CourierService courierService;
+
+    @EJB
+    private PermissionService permissionService;
 
     @Getter
     @Setter
@@ -48,22 +48,16 @@ public class ListCouriers implements Serializable {
     }
 
 
-    public boolean canSave(){
-        return authContext.isUserInRole(User.Roles.ADMIN) ||
-                authContext.isUserInRole(User.Roles.MANAGER)||
-                authContext.isUserInRole(User.Roles.WORKER);
+    public boolean canSave(Courier courier){
+        return permissionService.canSaveCourier(courier);
     }
 
-    public boolean canRemove(){
-        return authContext.isUserInRole(User.Roles.ADMIN) ||
-                authContext.isUserInRole(User.Roles.MANAGER)||
-                authContext.isUserInRole(User.Roles.WORKER);
+    public boolean canRemove(Courier courier){
+        return permissionService.canRemoveCourier(courier);
     }
 
-    public boolean canSelect(){
-        return authContext.isUserInRole(User.Roles.ADMIN) ||
-                authContext.isUserInRole(User.Roles.MANAGER)||
-                authContext.isUserInRole(User.Roles.WORKER);
+    public boolean canSelect(Courier courier){
+        return permissionService.canFindCourier(courier);
     }
 
 }

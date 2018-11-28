@@ -19,26 +19,26 @@
                 <h:outputText value="#{department.storage}" />
             </h:column>
             <h:column>
-                <h:button styleClass="btn btn-default" value="Pokaż"  rendered="#{listDepartments.canSelect()}" outcome="view_department.xhtml">
+                <h:button styleClass="btn btn-default" value="Pokaż"  rendered="#{listDepartments.canSelect(department)}" outcome="view_department.xhtml">
                     <f:param name="department" value="#{department.id}"/>
                 </h:button>
             </h:column>
             <h:column>
-                <h:button styleClass="btn btn-default" value="Lista kurierow" rendered="#{listCouriers.canSelect()}" outcome="list_couriers.xhtml" >
+                <h:button styleClass="btn btn-default" value="Lista kurierow" outcome="list_couriers.xhtml" >
                     <f:param name="department" value="#{department.id}" />
                 </h:button>
             </h:column>
             <h:column>
-                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listDepartments.canSave()}" outcome="edit_department.xhtml">
+                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listDepartments.canSave(department)}" outcome="edit_department.xhtml">
                     <f:param name="department" value="#{department.id}"/>
                 </h:button>
             </h:column>
             <h:column>
                 <h:form>
-                    <h:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listDepartments.canRemove()}" action="#{listDepartments.removeDepartments(department)}"/>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listDepartments.canRemove(department)}" action="#{listDepartments.removeDepartments(department)}"/>
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:button  styleClass="btn btn-primary" value="Nowy oddzial" rendered="#{listDepartments.canSave()}" outcome="edit_department.xhtml"/>
+        <h:button  styleClass="btn btn-primary" value="Nowy oddzial"  outcome="edit_department.xhtml"/>
     </ui:define>
 </ui:composition>
