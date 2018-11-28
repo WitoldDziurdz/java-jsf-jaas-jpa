@@ -27,7 +27,7 @@ import static javax.persistence.CascadeType.*;
         @NamedQuery(name = Pack.Queries.FIND_ALL, query = "select p from Pack p"),
         @NamedQuery(name = Pack.Queries.FIND_PACKS, query = "select p from Pack p where p.price > :price")
 })
-public class Pack implements Serializable {
+public class Pack extends Audit implements Serializable {
     public static class Queries {
         public static final String FIND_ALL = "PACK_FIND_ALL";
         public static final String FIND_PACKS = "PACK_FIND_BY_PRICE";
@@ -52,13 +52,6 @@ public class Pack implements Serializable {
 
     @ManyToMany(mappedBy = "packs",cascade={MERGE, REFRESH, DETACH})
     private List<Courier> couriers = new ArrayList<>();
-
-    @Getter
-    @Setter
-    @ManyToOne
-    @NotNull
-    @JsonIgnore
-    private User owner;
 
     public Pack(String address, TypeSize typeSize, double price, boolean express, User owner) {
         this.address = address;

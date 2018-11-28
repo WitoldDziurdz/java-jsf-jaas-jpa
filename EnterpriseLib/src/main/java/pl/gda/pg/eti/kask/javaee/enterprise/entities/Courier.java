@@ -1,5 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.message.ErrorMessage;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.validators.PhoneAnnotate;
@@ -51,13 +52,14 @@ public class Courier extends Audit implements Serializable {
     @ManyToMany(cascade={MERGE, REFRESH, DETACH})
     private List<Pack> packs = new ArrayList<>();
 
-    public Courier(String name, String surname, String phone, int age, List<Pack> packs, Department department) {
+    public Courier(String name, String surname, String phone, int age, List<Pack> packs, Department department, User owner) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
         this.age = age;
         this.packs = packs;
         this.department = department;
+        this.owner = owner;
     }
 
     @Override

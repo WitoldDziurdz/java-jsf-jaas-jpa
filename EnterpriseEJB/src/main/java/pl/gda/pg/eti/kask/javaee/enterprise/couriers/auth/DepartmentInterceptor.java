@@ -1,6 +1,7 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth;
 
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
+import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
+import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
 
 import javax.annotation.Priority;
 import javax.ejb.EJBAccessException;
@@ -12,19 +13,18 @@ import java.lang.reflect.Method;
 
 
 @Interceptor
-@PackAnnotation
+@DepartmentAnnotation
 @Priority(1000)
-public class PackInterceptor extends ElementInterceptor implements Serializable {
+public class DepartmentInterceptor extends ElementInterceptor implements Serializable {
 
-    private Pack pack;
+    private Department department;
 
     @AroundInvoke
     public Object invoke(InvocationContext context) throws Exception {
         Object parameter = context.getParameters()[0];
         Method method = context.getMethod();
-        if (parameter instanceof Pack) {
-            pack = (Pack) parameter;
-
+        if (parameter instanceof Department) {
+            department = (Department) parameter;
             if (isOperation(method)) {
                 return context.proceed();
             }
@@ -34,18 +34,18 @@ public class PackInterceptor extends ElementInterceptor implements Serializable 
     }
 
     protected boolean isElementOwner() {
-        if(pack!=null) {
+        if(department!=null) {
             String login = sessionCtx.getCallerPrincipal().getName();
-            Pack originalPack = em.find(Pack.class, pack.getId());
-            em.detach(originalPack);
-            return originalPack.getOwner().getLogin().equals(login);
+            Department origin = em.find(Department.class, department.getId());
+            em.detach(origin);
+            return origin.getOwner().getLogin().equals(login);
         }
         return false;
     }
 
     protected boolean isNewElement() {
-        if(pack!=null) {
-            return pack.getId() == null;
+        if(department!=null) {
+            return department.getId() == null;
         }
         return false;
     }

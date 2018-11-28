@@ -1,5 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth;
 
+import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Role;
 import pl.gda.pg.eti.kask.javaee.enterprise.users.UserService;
 
@@ -49,5 +50,14 @@ public abstract class ElementInterceptor {
         return permission.equals(Role.Permission.IF_OWNER);
     }
 
-    protected abstract boolean isNewOrOwnerElement();
+    protected boolean isNewOrOwnerElement() {
+        if (isNewElement() || isElementOwner()) {
+            return true;
+        }
+        return false;
+    }
+
+    protected abstract boolean isElementOwner();
+
+    protected abstract boolean isNewElement();
 }

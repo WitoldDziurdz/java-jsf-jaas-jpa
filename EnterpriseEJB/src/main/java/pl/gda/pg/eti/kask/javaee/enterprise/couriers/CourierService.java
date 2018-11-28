@@ -1,14 +1,14 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.couriers;
 
+import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.CourierAnnotation;
+import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.DepartmentAnnotation;
 import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.PackAnnotation;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.Department;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
-import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
+import pl.gda.pg.eti.kask.javaee.enterprise.entities.*;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.CourierEvent;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierCreation;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierDeletion;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierModification;
+import pl.gda.pg.eti.kask.javaee.enterprise.users.UserService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -30,6 +30,9 @@ public class CourierService implements Serializable {
 
     @Inject
     Event<CourierEvent> courierEvent;
+
+    @Inject
+    UserService userService;
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public Collection<Pack> findAllPacks() {
@@ -104,7 +107,7 @@ public class CourierService implements Serializable {
         em.remove(pack);
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
+   @CourierAnnotation
     @Transactional
     public void removeCourier(Courier courier) {
         courier = em.merge(courier);
@@ -112,7 +115,7 @@ public class CourierService implements Serializable {
         courierEvent.select(CourierDeletion.Literal).fire(CourierEvent.of(courier));
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
+    @DepartmentAnnotation
     @Transactional
     public void removeDepartment(Department department) {
         department = em.merge(department);
@@ -125,6 +128,7 @@ public class CourierService implements Serializable {
     @Transactional
     public Pack savePack(Pack pack) {
         if (pack.getId() == null) {
+            setOwner(pack);
             em.persist(pack);
         } else {
             pack = em.merge(pack);
@@ -134,10 +138,11 @@ public class CourierService implements Serializable {
         return pack;
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
+    @CourierAnnotation
     @Transactional
     public Courier saveCourier(Courier courier) {
         if (courier.getId() == null) {
+            setOwner(courier);
             em.persist(courier);
             courierEvent.select(CourierCreation.Literal).fire(CourierEvent.of(courier));
         } else {
@@ -148,10 +153,11 @@ public class CourierService implements Serializable {
         return courier;
     }
 
-    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
+    @DepartmentAnnotation
     @Transactional
     public Department saveDepartment(Department department){
         if (department.getId() == null) {
+            setOwner(department);
             em.persist(department);
         } else {
             department = em.merge(department);
@@ -170,5 +176,9 @@ public class CourierService implements Serializable {
         for(Courier courier: couriers){
             courierEvent.select(CourierDeletion.Literal).fire(CourierEvent.of(courier));
         }
+    }
+
+    private void setOwner(Audit audit){
+        audit.setOwner(userService.findCurrentUser());
     }
 }

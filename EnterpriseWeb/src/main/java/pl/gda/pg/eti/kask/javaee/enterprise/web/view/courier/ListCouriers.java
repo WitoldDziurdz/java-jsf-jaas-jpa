@@ -50,12 +50,14 @@ public class ListCouriers implements Serializable {
 
     public boolean canSave(){
         return authContext.isUserInRole(User.Roles.ADMIN) ||
-                authContext.isUserInRole(User.Roles.MANAGER);
+                authContext.isUserInRole(User.Roles.MANAGER)||
+                authContext.isUserInRole(User.Roles.WORKER);
     }
 
     public boolean canRemove(){
         return authContext.isUserInRole(User.Roles.ADMIN) ||
-                authContext.isUserInRole(User.Roles.MANAGER);
+                authContext.isUserInRole(User.Roles.MANAGER)||
+                authContext.isUserInRole(User.Roles.WORKER);
     }
 
     public boolean canSelect(){

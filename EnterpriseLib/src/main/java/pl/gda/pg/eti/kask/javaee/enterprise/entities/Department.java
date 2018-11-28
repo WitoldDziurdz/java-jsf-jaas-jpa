@@ -1,5 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,10 +46,11 @@ public class Department extends Audit implements Serializable {
     @OneToMany(cascade = {ALL}, mappedBy = "department")
     private List<Courier> couriers;
 
-    public Department(int numberOfWorkers, String address, boolean isStorage) {
+    public Department(int numberOfWorkers, String address, boolean isStorage, User owner) {
         this.numberOfWorkers = numberOfWorkers;
         this.address = address;
         this.isStorage = isStorage;
+        this.owner = owner;
     }
 
     @Override

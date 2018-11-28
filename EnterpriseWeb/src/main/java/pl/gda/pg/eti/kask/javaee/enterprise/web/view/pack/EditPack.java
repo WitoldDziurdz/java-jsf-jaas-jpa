@@ -22,9 +22,6 @@ public class EditPack implements Serializable {
     @Inject
     private CourierService courierService;
 
-    @Inject
-    AuthContext authContext;
-
     @Getter
     @Setter
     private Pack pack = new Pack();
@@ -44,7 +41,6 @@ public class EditPack implements Serializable {
 
 
     public String savePack() {
-        pack.setOwner(authContext.getCurrentUser());
         courierService.savePack(pack);
         return "list_packs?faces-redirect=true";
     }

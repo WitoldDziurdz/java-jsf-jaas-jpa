@@ -42,13 +42,13 @@ public class InitialFixture {
             Pack p2 = new Pack("Gdansk wyspianskiego 12", TypeSize.SMALL, 5, true, worker1);
             Pack p3 = new Pack("Gdansk wyspianskiego 22", TypeSize.MEDIUM, 5, true, worker2);
 
-            Department d1 = new Department(12, "Warszawa", false);
-            Department d2 = new Department(22, "Gdansk", true);
+            Department d1 = new Department(12, "Warszawa", false,manager1);
+            Department d2 = new Department(22, "Gdansk", true, manager2);
 
-            Courier c1 = new Courier("Hubert", "Polak", "570434267", 22, asList(p1, p2), d1);
-            Courier c2 = new Courier("Piotr", "Majewski", "570434211", 44, asList(p3), d2);
-            Courier c3 = new Courier("Krystian", "Olejnik", "570431267", 15, asList(p1, p2), d1);
-            Courier c4 = new Courier("Oskar", "Nawrocki", "570434331", 19, asList(p3), d2);
+            Courier c1 = new Courier("Hubert", "Polak", "570434267", 22, asList(p1, p2), d1, manager1);
+            Courier c2 = new Courier("Piotr", "Majewski", "570434211", 44, asList(p3), d2, manager1);
+            Courier c3 = new Courier("Krystian", "Olejnik", "570431267", 15, asList(p1, p2), d1, manager2);
+            Courier c4 = new Courier("Oskar", "Nawrocki", "570434331", 19, asList(p3), d2, manager2);
 
             em.persist(p1);
             em.persist(p2);
