@@ -3,8 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+>
 
 <h:head>
     <meta charset="utf-8"/>
@@ -12,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content="Java EE"/>
     <meta name="author" content="WK"/>
-    <!--<link rel="icon" href="../../favicon.ico"/>-->
 
     <title>Java EE</title>
 
@@ -60,6 +58,11 @@
                         <h:commandLink action="#{main.logout()}" value="(logout)" styleClass="navbar-link"/>
                     </h:panelGroup>
                 </h:form>
+                <h:panelGroup layout="block" styleClass="navbar-right" rendered="#{not authContext.authenticated}">
+                    <h:panelGroup layout="block" styleClass="navbar-text">
+                        <h:link outcome="/auth/registration.xhtml" value="Rejestracja" styleClass="navbar-link"/>
+                    </h:panelGroup>
+                </h:panelGroup>
                 <h:panelGroup layout="block" styleClass="navbar-right" rendered="#{not authContext.authenticated}">
                     <h:panelGroup layout="block" styleClass="navbar-text">
                         <h:link outcome="/auth/custom/login_form.xhtml" value="#{msg.login}" styleClass="navbar-link"/>

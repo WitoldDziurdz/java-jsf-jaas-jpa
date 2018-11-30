@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="head">
+        <title>#{msg.login}</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <h2 class="col-lg-offset-2">Rejestracja nowego uzytkownika do sytemu kurier</h2>
+        <h:form id="login-form" class="form-horizontal">
+            <p:focus for="login"/>
+            <h:panelGroup layout="block" styleClass="form-group"
+                          rendered="#{not empty facesContext.getMessageList('login-form')}">
+                <div class="col-sm-12">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span><i class="fa fa-times"></i></span>
+                        </button>
+                        <h:message for="login-form"/>
+                    </div>
+                </div>
+            </h:panelGroup>
+            <div class="form-group">
+                <h:outputLabel for="login" value="#{msg.login}" styleClass="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <h:inputText id="login" styleClass="form-control" value="#{registrationForm.login}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="password1" value="#{msg.password}" styleClass="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <h:inputSecret id="password1" styleClass="form-control" value="#{registrationForm.password1}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="password2" value="Powturz haslo" styleClass="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <h:inputSecret id="password2" styleClass="form-control" value="#{registrationForm.password2}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="roles" value="Wybierz role" styleClass="col-sm-2 control-label"/>
+                <div class="col-sm-10">
+                    <h:selectOneListbox  id="roles" value="#{registrationForm.role}">
+                        <f:selectItems value="#{registrationForm.rolesSizeAsSelectItems}"/>
+                    </h:selectOneListbox >
+                    <h:message for="roles"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-1">
+                    <h:commandButton action="#{registrationForm.registration()}" value="apply" styleClass="btn btn-default"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+
