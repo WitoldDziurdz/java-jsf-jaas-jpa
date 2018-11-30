@@ -63,8 +63,21 @@ public class InitialFixture {
     }
 
     private void initPerm() {
+        addAdminPerm();
         addManagerPerm();
         addWorkerPerm();
+    }
+
+    private void addAdminPerm() {
+        em.persist(new Role(Roles.ADMIN, Operations.FIND_PACK, Permission.GRANTED));
+        em.persist(new Role(Roles.ADMIN, Operations.FIND_COURIER, Permission.GRANTED));
+        em.persist(new Role(Roles.ADMIN, Operations.FIND_DEPARTMENT, Permission.GRANTED));
+        em.persist(new Role(Roles.ADMIN, Operations.REMOVE_PACK, Permission.GRANTED));
+        em.persist(new Role(Roles.ADMIN, Operations.REMOVE_COURIER, Permission.GRANTED));
+        em.persist(new Role(Roles.ADMIN, Operations.REMOVE_DEPARTMENT, Permission.GRANTED));
+        em.persist(new Role(Roles.ADMIN, Operations.SAVE_PACK, Permission.GRANTED));
+        em.persist(new Role(Roles.ADMIN, Operations.SAVE_COURIER, Permission.GRANTED));
+        em.persist(new Role(Roles.ADMIN, Operations.SAVE_DEPARTMENT, Permission.GRANTED));
     }
 
     private void addManagerPerm() {
