@@ -24,7 +24,18 @@ import static javax.persistence.CascadeType.ALL;
 @NamedQueries({
         @NamedQuery(name = Department.Queries.FIND_ALL, query = "select d from Department d")
 })
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = Department.Graphs.COURIERS,
+                attributeNodes = {@NamedAttributeNode("couriers")})
+})
 public class Department extends Audit implements Element, Serializable {
+
+    public static class Graphs {
+        public static final String COURIERS = "Department{couriers}";
+    }
+
+
     public static class Queries {
         public static final String FIND_ALL = "DEPARTMENT_FIND_ALL";
     }

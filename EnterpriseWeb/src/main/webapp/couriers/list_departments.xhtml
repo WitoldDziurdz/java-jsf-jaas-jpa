@@ -19,7 +19,7 @@
                 <h:outputText value="#{department.storage}" />
             </h:column>
             <h:column>
-                <h:button styleClass="btn btn-default" value="Pokaż"  rendered="#{listDepartments.canSelect(department)}" outcome="view_department.xhtml">
+                <h:button styleClass="btn btn-default" value="Pokaż"  rendered="#{listDepartments.canSelect()}" outcome="view_department.xhtml">
                     <f:param name="department" value="#{department.id}"/>
                 </h:button>
             </h:column>
@@ -29,13 +29,13 @@
                 </h:button>
             </h:column>
             <h:column>
-                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listDepartments.canSave(department)}" outcome="edit_department.xhtml">
+                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listDepartments.canSave()}" outcome="edit_department.xhtml">
                     <f:param name="department" value="#{department.id}"/>
                 </h:button>
             </h:column>
             <h:column>
                 <h:form>
-                    <h:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listDepartments.canRemove(department)}" action="#{listDepartments.removeDepartments(department)}"/>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listDepartments.canRemove()}" action="#{listDepartments.removeDepartments(department)}"/>
                 </h:form>
             </h:column>
         </h:dataTable>

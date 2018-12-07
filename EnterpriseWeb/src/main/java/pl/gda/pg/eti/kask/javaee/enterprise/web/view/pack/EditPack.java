@@ -9,7 +9,6 @@ import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
 import pl.gda.pg.eti.kask.javaee.enterprise.users.PermissionService;
 import pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth.AuthContext;
 
-import javax.ejb.EJB;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -25,8 +24,8 @@ public class EditPack implements Serializable {
     @Inject
     private CourierService courierService;
 
-    @EJB
-    private PermissionService permissionService;
+    @Inject
+    AuthContext authContext;
 
     @Getter
     @Setter
@@ -47,11 +46,14 @@ public class EditPack implements Serializable {
 
 
     public String savePack() {
+        pack.setOwner(authContext.getCurrentUser());
         courierService.savePack(pack);
         return "list_packs?faces-redirect=true";
     }
 
     public boolean canSave(){
-        return permissionService.canSavePack(pack);
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER)||
+                authContext.isUserInRole(User.Roles.WORKER);
     }
 }

@@ -19,11 +19,12 @@ import java.util.Collection;
 @Named
 @RequestScoped
 public class ListCouriers implements Serializable {
-    @EJB
-    private CourierService courierService;
+
+    @Inject
+    AuthContext authContext;
 
     @EJB
-    private PermissionService permissionService;
+    private CourierService courierService;
 
     @Getter
     @Setter
@@ -48,16 +49,20 @@ public class ListCouriers implements Serializable {
     }
 
 
-    public boolean canSave(Courier courier){
-        return permissionService.canSaveCourier(courier);
+    public boolean canSave(){
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER);
     }
 
-    public boolean canRemove(Courier courier){
-        return permissionService.canRemoveCourier(courier);
+    public boolean canRemove(){
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER);
     }
 
-    public boolean canSelect(Courier courier){
-        return permissionService.canFindCourier(courier);
+    public boolean canSelect(){
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER)||
+                authContext.isUserInRole(User.Roles.WORKER);
     }
 
 }

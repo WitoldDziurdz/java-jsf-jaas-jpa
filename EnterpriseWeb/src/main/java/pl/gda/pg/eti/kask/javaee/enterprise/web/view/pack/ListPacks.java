@@ -6,7 +6,6 @@ import pl.gda.pg.eti.kask.javaee.enterprise.couriers.CourierService;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Courier;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.Pack;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.User;
-import pl.gda.pg.eti.kask.javaee.enterprise.users.PermissionService;
 import pl.gda.pg.eti.kask.javaee.enterprise.web.view.auth.AuthContext;
 
 import javax.ejb.EJB;
@@ -20,11 +19,11 @@ import java.util.Collection;
 @RequestScoped
 public class ListPacks implements Serializable {
 
-    @EJB
-    private CourierService courierService;
+    @Inject
+    AuthContext authContext;
 
     @EJB
-    private PermissionService permissionService;
+    private CourierService courierService;
 
     @Getter
     @Setter
@@ -40,12 +39,10 @@ public class ListPacks implements Serializable {
         if (packs == null) {
             if (courier == null) {
                 if(price > 0.0) {
-                    packs = courierService.findAllPacks();
-                }else{
                     packs = courierService.findPacksByPrice(price);
+                }else{
+                    packs = courierService.findAllPacks();
                 }
-                packs = courierService.findPacksByPrice(price);
-
             } else {
                 packs = courierService.findPacksOfCourier(courier);
             }
@@ -62,15 +59,21 @@ public class ListPacks implements Serializable {
         return "list_packs?faces-redirect=true";
     }
 
-    public boolean canSave(Pack pack){
-        return permissionService.canSavePack(pack);
+    public boolean canSave(){
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER)||
+                authContext.isUserInRole(User.Roles.WORKER);
     }
 
-    public boolean canRemove(Pack pack){
-        return permissionService.canRemovePack(pack);
+    public boolean canRemove(){
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER)||
+                authContext.isUserInRole(User.Roles.WORKER);
     }
 
-    public boolean canSelect(Pack pack){
-        return permissionService.canFindPack(pack);
+    public boolean canSelect(){
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER)||
+                authContext.isUserInRole(User.Roles.WORKER);
     }
 }

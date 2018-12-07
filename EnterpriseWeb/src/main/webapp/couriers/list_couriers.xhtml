@@ -27,7 +27,7 @@
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Pokaż" rendered="#{listCouriers.canSelect(courier)}" outcome="view_courier.xhtml">
+                <h:button styleClass="btn btn-default" value="Pokaż" rendered="#{listCouriers.canSelect()}" outcome="view_courier.xhtml">
                     <f:param name="courier" value="#{courier.id}"/>
                 </h:button>
             </h:column>
@@ -39,14 +39,14 @@
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listCouriers.canSave(courier)}" outcome="edit_courier.xhtml">
+                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listCouriers.canSave()}" outcome="edit_courier.xhtml">
                     <f:param name="courier" value="#{courier.id}"/>
                 </h:button>
             </h:column>
 
             <h:column>
                 <h:form>
-                    <h:commandButton styleClass="btn btn-danger" value="Usuń"  rendered="#{listCouriers.canRemove(courier)}" action="#{listCouriers.removeCourier(courier)}"/>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń"  rendered="#{listCouriers.canRemove()}" action="#{listCouriers.removeCourier(courier)}"/>
                 </h:form>
             </h:column>
         </h:dataTable>

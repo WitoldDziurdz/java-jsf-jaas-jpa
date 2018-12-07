@@ -1,6 +1,5 @@
 package pl.gda.pg.eti.kask.javaee.enterprise.couriers;
 
-import pl.gda.pg.eti.kask.javaee.enterprise.couriers.auth.RoleAnnotation;
 import pl.gda.pg.eti.kask.javaee.enterprise.entities.*;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.CourierEvent;
 import pl.gda.pg.eti.kask.javaee.enterprise.events.qualifiers.CourierCreation;
@@ -12,6 +11,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -52,19 +52,25 @@ public class CourierService implements Serializable {
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public Collection<Courier> findAllCouriers() {
+        EntityGraph<?> entityGraph = em.getEntityGraph(Courier.Graphs.PACKS);
         TypedQuery<Courier> query = em.createNamedQuery(Courier.Queries.FIND_ALL, Courier.class);
+        query.setHint("javax.persistence.loadgraph", entityGraph);
         return query.getResultList();
     }
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public Collection<Courier> findAllSortCouriers() {
+        EntityGraph<?> entityGraph = em.getEntityGraph(Courier.Graphs.PACKS);
         TypedQuery<Courier> query = em.createNamedQuery(Courier.Queries.FIND_ALL_SORT, Courier.class);
+        query.setHint("javax.persistence.loadgraph", entityGraph);
         return query.getResultList();
     }
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     public Collection<Department> findAllDepartments() {
+        EntityGraph<?> entityGraph = em.getEntityGraph(Department.Graphs.COURIERS);
         TypedQuery<Department> query = em.createNamedQuery(Department.Queries.FIND_ALL, Department.class);
+        query.setHint("javax.persistence.loadgraph", entityGraph);
         return query.getResultList();
     }
 
@@ -88,7 +94,7 @@ public class CourierService implements Serializable {
         return em.find(Department.class, id);
     }
 
-    @RoleAnnotation
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     @Transactional
     public void removePack(Pack pack) {
         pack = em.merge(pack);
@@ -99,7 +105,7 @@ public class CourierService implements Serializable {
         em.remove(pack);
     }
 
-    @RoleAnnotation
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
     @Transactional
     public void removeCourier(Courier courier) {
         courier = em.merge(courier);
@@ -107,7 +113,7 @@ public class CourierService implements Serializable {
         courierEvent.select(CourierDeletion.Literal).fire(CourierEvent.of(courier));
     }
 
-    @RoleAnnotation
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
     @Transactional
     public void removeDepartment(Department department) {
         department = em.merge(department);
@@ -116,7 +122,7 @@ public class CourierService implements Serializable {
         deleteCouriers(couriers);
     }
 
-    @RoleAnnotation
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
     @Transactional
     public Pack savePack(Pack pack) {
         if (pack.getId() == null) {
@@ -130,7 +136,7 @@ public class CourierService implements Serializable {
         return pack;
     }
 
-    @RoleAnnotation
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
     @Transactional
     public Courier saveCourier(Courier courier) {
         if (courier.getId() == null) {
@@ -145,7 +151,7 @@ public class CourierService implements Serializable {
         return courier;
     }
 
-    @RoleAnnotation
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
     @Transactional
     public Department saveDepartment(Department department){
         if (department.getId() == null) {

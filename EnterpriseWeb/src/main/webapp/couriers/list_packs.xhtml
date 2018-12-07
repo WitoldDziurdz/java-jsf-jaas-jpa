@@ -26,20 +26,20 @@
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Pokaż" rendered="#{listPacks.canSelect(pack)}" outcome="view_pack.xhtml">
+                <h:button styleClass="btn btn-default" value="Pokaż" rendered="#{listPacks.canSelect()}" outcome="view_pack.xhtml">
                     <f:param name="pack" value="#{pack.id}"/>
                 </h:button>
             </h:column>
 
             <h:column>
-                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listPacks.canSave(pack)}" outcome="edit_pack.xhtml">
+                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listPacks.canSave()}" outcome="edit_pack.xhtml">
                     <f:param name="pack" value="#{pack.id}"/>
                 </h:button>
             </h:column>
 
             <h:column>
                 <h:form>
-                    <h:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listPacks.canRemove(pack)}" action="#{listPacks.removePack(pack)}"/>
+                    <h:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listPacks.canRemove()}" action="#{listPacks.removePack(pack)}"/>
                 </h:form>
             </h:column>
         </h:dataTable>

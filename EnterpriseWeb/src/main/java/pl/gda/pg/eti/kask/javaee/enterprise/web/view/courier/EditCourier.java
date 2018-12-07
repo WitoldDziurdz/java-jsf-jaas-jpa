@@ -21,11 +21,11 @@ import java.util.Collection;
 @ViewScoped
 public class EditCourier implements Serializable {
 
-    @EJB
-    private CourierService courierService;
+    @Inject
+    AuthContext authContext;
 
     @EJB
-    private PermissionService permissionService;
+    private CourierService courierService;
 
     @Getter
     @Setter
@@ -45,6 +45,7 @@ public class EditCourier implements Serializable {
     }
 
     public boolean canSave(){
-        return permissionService.canSaveCourier(courier);
+        return authContext.isUserInRole(User.Roles.ADMIN) ||
+                authContext.isUserInRole(User.Roles.MANAGER);
     }
 }

@@ -23,7 +23,17 @@ import static javax.persistence.CascadeType.*;
         @NamedQuery(name = Courier.Queries.FIND_ALL, query = "select c from Courier c"),
         @NamedQuery(name = Courier.Queries.FIND_ALL_SORT, query = "select c from Courier c order by c.modificationDate desc")
 })
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = Courier.Graphs.PACKS,
+                attributeNodes = {@NamedAttributeNode("packs"),@NamedAttributeNode("department")})
+})
 public class Courier extends Audit implements Element, Serializable {
+
+    public static class Graphs {
+        public static final String PACKS = "Courier{packs}";
+    }
+
     public static class Queries {
         public static final String FIND_ALL = "COURIER_FIND_ALL";
         public static final String FIND_ALL_SORT = "COURIER_FIND_ALL_SORT";

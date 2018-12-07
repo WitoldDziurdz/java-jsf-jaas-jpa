@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -27,13 +28,24 @@ public class UserService {
 
     @RolesAllowed(User.Roles.ADMIN)
     public List<User> findAllUsers() {
-        return em.createNamedQuery(User.Queries.FIND_ALL, User.class).getResultList();
+        return findAllUsers(User.Graphs.WITH_ROLES);
+    }
+
+    @RolesAllowed(User.Roles.ADMIN)
+    public List<User> findAllUsers(String entityGraphName) {
+        EntityGraph<?> entityGraph = em.getEntityGraph(entityGraphName);
+        TypedQuery<User> query = em.createQuery("SELECT i FROM User i", User.class);
+        query.setHint("javax.persistence.loadgraph", entityGraph);
+        List<User> users = query.getResultList();
+        return users;
     }
 
     @RolesAllowed(User.Roles.ADMIN)
     public User findUserById(String id) {
+        EntityGraph<?> entityGraph = em.getEntityGraph(User.Graphs.WITH_ROLES);
         TypedQuery<User> query = em.createNamedQuery(User.Queries.FIND_BY_ID, User.class);
         query.setParameter("id", id);
+        query.setHint("javax.persistence.loadgraph", entityGraph);
         return query.getSingleResult();
     }
 
@@ -66,8 +78,10 @@ public class UserService {
 
 
     private User findUserByLogin(String login) {
+        EntityGraph<?> entityGraph = em.getEntityGraph(User.Graphs.WITH_ROLES);
         TypedQuery<User> query = em.createNamedQuery(User.Queries.FIND_BY_LOGIN, User.class);
         query.setParameter("login", login);
+        query.setHint("javax.persistence.loadgraph", entityGraph);
         return query.getSingleResult();
     }
 }

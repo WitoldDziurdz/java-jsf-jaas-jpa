@@ -17,7 +17,16 @@ import java.util.List;
         @NamedQuery(name = User.Queries.FIND_BY_ID, query = "SELECT u FROM User u WHERE u.id = :id")
 
 })
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = User.Graphs.WITH_ROLES,
+                attributeNodes = {@NamedAttributeNode("roles")})
+})
 public class User implements Serializable {
+
+    public static class Graphs {
+        public static final String WITH_ROLES = "User{roles}";
+    }
 
     public static class Queries {
         public static final String FIND_ALL = "User.findAll";
