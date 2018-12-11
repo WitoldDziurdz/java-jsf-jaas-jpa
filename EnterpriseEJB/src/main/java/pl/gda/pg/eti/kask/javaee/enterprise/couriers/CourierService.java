@@ -11,10 +11,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Collection;
@@ -39,10 +37,76 @@ public class CourierService implements Serializable {
     }
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
-    public Collection<Pack> findPacksByPrice(double price) {
-        TypedQuery<Pack> query = em.createNamedQuery(Pack.Queries.FIND_PACKS, Pack.class)
-                .setParameter("price", price);
-        return query.getResultList();
+    public Collection<Pack> findAllPacksByParameters(String address, TypeSize type, Double price, Boolean isExpress) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Pack> query = builder.createQuery(Pack.class);
+        Root<Pack> pack = query.from(Pack.class);
+        query.select(pack);
+
+        Predicate minPrice = null;
+        Predicate likeAddress = null;
+        Predicate equalType = null;
+        Predicate equalExpress = null;
+
+        if ( price != null && price > 0) {
+            minPrice = builder.ge(pack.get(Pack_.price), price);
+        }
+        if (address != null && (!address.isEmpty())) {
+            likeAddress = builder.like(builder.lower(pack.get(Pack_.address)), "%" + address.toLowerCase() + "%");
+        }
+        if(type!=null) {
+            equalType = builder.equal(pack.get(Pack_.typeSize), type);
+        }
+        if(isExpress != null) {
+            equalExpress = builder.equal(pack.get(Pack_.express), isExpress);
+        }
+
+        Predicate searchCriteria = builder.and();
+
+        if(minPrice!=null) {
+            searchCriteria = builder.and(searchCriteria, minPrice);
+        }
+        if(likeAddress!= null) {
+            searchCriteria = builder.and(searchCriteria, likeAddress);
+        }
+        if(equalType!=null) {
+            searchCriteria = builder.and(searchCriteria, equalType);
+        }
+        if(equalExpress!=null) {
+            searchCriteria = builder.and(searchCriteria, equalExpress);
+        }
+
+        query.where(searchCriteria);
+        return em.createQuery(query).getResultList();
+    }
+
+    @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
+    public Collection<Pack> findAllPacksBySort(TypeSort typeSort) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Pack> query = builder.createQuery(Pack.class);
+        Root<Pack> pack = query.from(Pack.class);
+        query.select(pack);
+        Expression exception = null;
+        switch (typeSort){
+            case ID:
+                exception = pack.get(Pack_.id);
+                break;
+            case ADDRESS:
+                exception = pack.get(Pack_.address);
+                break;
+            case TYPE_SIZE:
+                exception = pack.get(Pack_.typeSize);
+                break;
+            case PRICE:
+                exception = pack.get(Pack_.price);
+                break;
+            case EXPRESS:
+                exception = pack.get(Pack_.express);
+                break;
+        }
+        Order order = builder.asc(exception);
+        query.orderBy(order);
+        return em.createQuery(query).getResultList();
     }
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER, User.Roles.WORKER})
@@ -98,8 +162,9 @@ public class CourierService implements Serializable {
     @Transactional
     public void removePack(Pack pack) {
         pack = em.merge(pack);
-        for(Courier courier:pack.getCouriers()){
+        for (Courier courier : pack.getCouriers()) {
             courier.getPacks().remove(pack);
+            System.out.println(courier);
         }
         updateCouriers(pack.getCouriers());
         em.remove(pack);
@@ -153,30 +218,32 @@ public class CourierService implements Serializable {
 
     @RolesAllowed({User.Roles.ADMIN, User.Roles.MANAGER})
     @Transactional
-    public Department saveDepartment(Department department){
+    public Department saveDepartment(Department department) {
         if (department.getId() == null) {
             setOwner(department);
             em.persist(department);
         } else {
             department = em.merge(department);
-            updateCouriers(department.getCouriers());
+            for (Courier courier : department.getCouriers()) {
+                courierEvent.select(CourierModification.Literal).fire(CourierEvent.of(courier));
+            }
         }
         return department;
     }
 
-    private void updateCouriers(Collection<Courier> couriers){
-        for(Courier courier: couriers){
+    private void updateCouriers(Collection<Courier> couriers) {
+        for (Courier courier : couriers) {
             courierEvent.select(CourierModification.Literal).fire(CourierEvent.of(courier));
         }
     }
 
-    private void deleteCouriers(Collection<Courier> couriers){
-        for(Courier courier: couriers){
+    private void deleteCouriers(Collection<Courier> couriers) {
+        for (Courier courier : couriers) {
             courierEvent.select(CourierDeletion.Literal).fire(CourierEvent.of(courier));
         }
     }
 
-    private void setOwner(Element element){
+    private void setOwner(Element element) {
         element.setOwner(userService.findCurrentUser());
     }
 }

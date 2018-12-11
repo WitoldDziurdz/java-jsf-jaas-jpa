@@ -2,57 +2,106 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <f:metadata>
         <f:viewParam name="courier" value="#{listPacks.courier}"/>
-        <f:viewParam name="price" value="#{listPacks.price}" converter="javax.faces.Double"/>
     </f:metadata>
     <ui:define name="content">
-        <h:dataTable styleClass="table table-striped table-hover" value="#{listPacks.packs}" var="pack">
-            <h:column>
-                <h:outputText value="#{pack.id}"/>
-            </h:column>
-            <h:column>
-                <h:outputText value="#{pack.address}"/>
-            </h:column>
-            <h:column>
-                <h:outputText value="#{pack.typeSize}"/>
-            </h:column>
-            <h:column>
-                <h:outputText value="#{pack.price}"/>
-            </h:column>
-            <h:column>
-                <h:outputText value="#{pack.express}"/>
-            </h:column>
-
-            <h:column>
-                <h:button styleClass="btn btn-default" value="Pokaż" rendered="#{listPacks.canSelect()}" outcome="view_pack.xhtml">
-                    <f:param name="pack" value="#{pack.id}"/>
-                </h:button>
-            </h:column>
-
-            <h:column>
-                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listPacks.canSave()}" outcome="edit_pack.xhtml">
-                    <f:param name="pack" value="#{pack.id}"/>
-                </h:button>
-            </h:column>
-
-            <h:column>
-                <h:form>
-                    <h:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listPacks.canRemove()}" action="#{listPacks.removePack(pack)}"/>
-                </h:form>
-            </h:column>
-        </h:dataTable>
-        <h:panelGrid styleClass="table table-striped" columns="2">
+        <h:panelGrid styleClass="table table-striped" columns="3">
             <h:form>
-                <h:commandButton styleClass="btn btn-primary" value="Filtrowac po cenie: "
-                                 action="#{listPacks.filtrByPrice()}"/>
-                <h:outputLabel value="Cena: " for="price"/>
+                <h:outputLabel value="Adres : " for="address"/>
+                <h:inputText id="address" value="#{listPacks.address}"/>
+                <h:message for="address"/>
+
+                <h:outputLabel value="Typ paczki: " for="typeSize"/>
+                <h:selectOneMenu  id="typeSize" value="#{listPacks.typeSize}">
+                    <f:selectItems value="#{listPacks.typeSizeAsSelectItems}"/>
+                </h:selectOneMenu >
+                <h:message for="typeSize"/>
+
+                <h:outputLabel value="Powyzej ceny: " for="price"/>
                 <h:inputText id="price" value="#{listPacks.price}" converter="javax.faces.Double">
-                    <f:validateDoubleRange minimum = "0.0"/>
+                    <f:validateDoubleRange minimum="0.0"/>
                 </h:inputText>
-            <h:message for="price"/>
+                <h:message for="price"/>
+
+                <h:outputLabel value="Ekspresowa: " for="express"/>
+                <h:selectBooleanCheckbox id="express" value="#{listPacks.express}" converter="javax.faces.Boolean"/>
+                <h:message for="express"/>
+
+                <p:commandButton styleClass="btn btn-primary" value="Znajdź"
+                                 actionListener="#{listPacks.findPacks()}"
+                                 process="@form" update=":packs"
+                />
             </h:form>
+        </h:panelGrid>
+        <p:dataTable id="packs" styleClass="table table-striped table-hover" value="#{listPacks.packs}" var="pack">
+            <p:column>
+                <f:facet name="header">
+                    <p:commandButton styleClass="btn btn-primary" value="ID"
+                                     actionListener="#{listPacks.sortById()}"
+                                     process="@parent" update=":packs"/>
+                </f:facet>
+                <h:outputText value="#{pack.id}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <p:commandButton styleClass="btn btn-primary" value="Adres"
+                                     actionListener="#{listPacks.sortByAddress()}"
+                                     process="@parent" update=":packs"/>
+                </f:facet>
+                <h:outputText value="#{pack.address}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <p:commandButton styleClass="btn btn-primary" value="Typ"
+                                     actionListener="#{listPacks.sortByTypeSize()}"
+                                     process="@parent" update=":packs"/>
+                </f:facet>
+                <h:outputText value="#{pack.typeSize}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <p:commandButton styleClass="btn btn-primary" value="Cena"
+                                     actionListener="#{listPacks.sortByPrice()}"
+                                     process="@parent" update=":packs"/>
+                </f:facet>
+                <h:outputText value="#{pack.price}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <p:commandButton styleClass="btn btn-primary" value="Ekspresowa"
+                                     actionListener="#{listPacks.sortByExpress()}"
+                                     process="@parent" update=":packs"/>
+                </f:facet>
+                <h:outputText value="#{pack.express}"/>
+            </p:column>
+
+            <p:column>
+                <h:button styleClass="btn btn-default" value="Pokaż" rendered="#{listPacks.canSelect()}"
+                          outcome="view_pack.xhtml">
+                    <f:param name="pack" value="#{pack.id}"/>
+                </h:button>
+            </p:column>
+
+            <p:column>
+                <h:button styleClass="btn btn-default" value="Edytuj" rendered="#{listPacks.canSave()}"
+                          outcome="edit_pack.xhtml">
+                    <f:param name="pack" value="#{pack.id}"/>
+                </h:button>
+            </p:column>
+
+            <p:column>
+                <h:form>
+                    <p:commandButton styleClass="btn btn-danger" value="Usuń" rendered="#{listPacks.canRemove()}"
+                                     actionListener="#{listPacks.removePack(pack)}"
+                                     process="@form" update=":packs"
+                    />
+                </h:form>
+            </p:column>
+        </p:dataTable>
+        <h:panelGrid styleClass="table table-striped" columns="2">
             <h:button styleClass="btn btn-primary" value="Nowa paczka" outcome="edit_pack.xhtml"/>
         </h:panelGrid>
     </ui:define>
